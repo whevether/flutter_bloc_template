@@ -57,6 +57,7 @@ dependencies:
   flutter_bloc: ^9.1.1 #状态管理
   replay_bloc: ^0.3.0 #状态管理增强
   bloc_concurrency: ^0.3.0 #状态管理增强
+  water_drop_nav_bar: ^2.2.2
 
 dev_dependencies:
   flutter_test:
