@@ -50,15 +50,16 @@ dependencies:
   share_plus: ^11.0.0 #分享
   path_provider: ^2.1.5 #获取文件路径
   intl_translation: ^0.20.1 #国际化翻译
-  gal: ^2.3.1 #全局状态管理
+  gal: ^2.3.1 #保存图片与视频
   local_auth: ^2.3.0 #本地生物识别
   connectivity_plus: ^6.1.4 #网络连接状态
   flutter_screenutil: ^5.9.3 #屏幕适配
   flutter_bloc: ^9.1.1 #状态管理
   replay_bloc: ^0.3.0 #状态管理增强
   bloc_concurrency: ^0.3.0 #状态管理增强
-  water_drop_nav_bar: ^2.2.2
-  provider: ^6.1.5
+  water_drop_nav_bar: ^2.2.2 #水滴导航栏
+  bloc_test: ^10.0.0 #状态管理测试
+  bloc_lint: ^0.2.1 #状态管理lint
 
 dev_dependencies:
   flutter_test:
