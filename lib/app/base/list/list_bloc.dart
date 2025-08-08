@@ -1,4 +1,5 @@
 import 'package:easy_refresh/easy_refresh.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc_template/app/base/bloc/base_bloc.dart';
 import 'package:flutter_bloc_template/app/base/list/list_event.dart';
 import 'package:flutter_bloc_template/app/base/list/list_state.dart';
@@ -19,6 +20,8 @@ class ListBloc<T> extends BaseBloc<ListEvent<T>, ListState<T>> {
   final int pageSize;
   ///EasyRefresh控制器
   final EasyRefreshController controller = EasyRefreshController();
+  //滚动控制器
+  final ScrollController scrollController = ScrollController();
 
   ListBloc({
     required this.url,
@@ -70,7 +73,18 @@ class ListBloc<T> extends BaseBloc<ListEvent<T>, ListState<T>> {
       });
     }
   }
-
+  //
+  void scrollToTopOrRefresh() {
+    if (scrollController.offset > 0) {
+      scrollController.animateTo(
+        0,
+        duration: const Duration(milliseconds: 200),
+        curve: Curves.linear,
+      );
+    } else {
+      controller.callRefresh();
+    }
+  }
   @override
   Future<void> close() async {
     controller.dispose();

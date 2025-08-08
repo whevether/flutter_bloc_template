@@ -40,6 +40,7 @@ Future<void> main() async {
     },
   );
 }
+
 Future initServices() async {
   //包信息
   Utils.packageInfo = await PackageInfo.fromPlatform();
@@ -47,6 +48,7 @@ Future initServices() async {
   Log.d("Init LocalStorage Service");
   await LocalStorageService.instance.init();
 }
+
 class AppScrollBehavior extends MaterialScrollBehavior {
   @override
   Set<PointerDeviceKind> get dragDevices => PointerDeviceKind.values.toSet();
@@ -76,7 +78,7 @@ class MyApp extends StatelessWidget {
               GlobalCupertinoLocalizations.delegate,
               LanguageLocalizationsDelegate(),
             ],
-            
+
             // routerConfig: AppRouter.instance.router,
             routeInformationProvider:
                 AppRouter.instance.router.routeInformationProvider,
@@ -84,7 +86,17 @@ class MyApp extends StatelessWidget {
                 AppRouter.instance.router.routeInformationParser,
             routerDelegate: AppRouter.instance.router.routerDelegate,
             locale: state.locale,
-            supportedLocales: const [Locale("zh", "CN")],
+            supportedLocales: const [
+              Locale("zh", "CN"),
+              Locale("en", "US"),
+              Locale("zh", "HK"),
+              Locale("vi", "VN"),
+              Locale("th", "TH"),
+              Locale("in", "ID"),
+              Locale("hi", "IN"),
+              Locale("en", "PH"),
+              Locale("ms", "MY"),
+            ],
             debugShowCheckedModeBanner: false,
             // navigatorObservers: [FlutterSmartDialog.observer],
             builder: FlutterSmartDialog.init(
