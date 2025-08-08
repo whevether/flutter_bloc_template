@@ -1,8 +1,9 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc_template/app/base/bloc/base_event.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bloc_template/app/base/load/load_bloc.dart';
 import 'package:flutter_bloc_template/app/base/loading_state.dart';
+
 /// createTime: 2021/9/29 on 16:49
 /// desc:
 ///
@@ -48,13 +49,6 @@ abstract class BaseBloc<E extends BaseEvent, S> extends BaseLoadBloc<E, S> {
 
   BaseBloc(super.initialState);
 
-  ///view层接受bloc层事件
-  void sendEventToView(String type, [data]) {
-    if (_loadingState == null) {
-      throw Exception('Please use [BaseState.addBloc()] first...');
-    }
-    _loadingState!.sendEventToView(type, data);
-  }
 
   BuildContext get context {
     if (_loadingState == null) {

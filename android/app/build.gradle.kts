@@ -8,7 +8,7 @@ plugins {
 android {
     namespace = "com.example.flutter_bloc_template"
     compileSdk = flutter.compileSdkVersion
-    ndkVersion = flutter.ndkVersion
+    ndkVersion = "27.3.13750724"
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
@@ -20,10 +20,10 @@ android {
     }
     packaging {
         dex {
-            useLegacyPackaging true
+            useLegacyPackaging = true
         }
         jniLibs {
-            useLegacyPackaging true
+            useLegacyPackaging = true
         }
     }
     defaultConfig {

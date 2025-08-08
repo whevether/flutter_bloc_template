@@ -2,8 +2,8 @@ allprojects {
     repositories {
         google()
         mavenCentral()
-        maven { url 'https://jitpack.io' }
-        maven { url "https://maven.aliyun.com/repository/public" }
+        maven { url = uri("https://jitpack.io") }
+        maven { url  = uri("https://maven.aliyun.com/repository/public") }
     }
 }
 
@@ -11,18 +11,18 @@ val newBuildDir: Directory = rootProject.layout.buildDirectory.dir("../../build"
 rootProject.layout.buildDirectory.value(newBuildDir)
 
 subprojects {
-     afterEvaluate { project ->
-        if (project.plugins.hasPlugin("com.android.application") || project.plugins.hasPlugin("com.android.library")) {
-            project.android {
-                compileSdkVersion 35
-                buildToolsVersion "35.0.0"
+    afterEvaluate {
+        if (plugins.hasPlugin("com.android.application") || plugins.hasPlugin("com.android.library")) {
+            extensions.configure<com.android.build.gradle.BaseExtension> {
+                compileSdkVersion(35)
+                buildToolsVersion = "35.0.0"
                 if (namespace == null) {
-                    namespace project.group
+                    namespace = project.group.toString()
                 }
             }
         }
     }
-    project.layout.buildDirectory.value(rootProject.layout.buildDirectory.dir(project.name).get())
+    layout.buildDirectory.set(rootProject.layout.buildDirectory.dir(project.name))
     dependencyLocking {
         ignoredDependencies.add("io.flutter:*")
         lockFile = file("${rootProject.projectDir}/project-${project.name}.lockfile")

@@ -1,8 +1,8 @@
-/* BaseEvent
- * 
- * This abstract class defines the structure for events in a Bloc architecture.
- * It requires implementing classes to define how an event transforms into a state.
- */
+/// createTime: 2021/9/29 on 16:49
+/// desc:
+///
+/// @author azhon
+
 abstract class BaseEvent<B, S> {
   ///event transform to state
   ///[bloc] 事件的Bloc

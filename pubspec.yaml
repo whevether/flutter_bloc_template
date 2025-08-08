@@ -30,6 +30,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -60,6 +62,7 @@ dependencies:
   water_drop_nav_bar: ^2.2.2 #水滴导航栏
   bloc_test: ^10.0.0 #状态管理测试
   bloc_lint: ^0.2.1 #状态管理lint
+  lottie: ^3.3.1 #动画
 
 dev_dependencies:
   flutter_test:
@@ -82,6 +85,8 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+  assets: 
+    - assets/lotties/
 
   # To add assets to your application, add an assets section, like this:
   # assets:
