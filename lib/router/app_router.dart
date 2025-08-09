@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc_template/modules/index/index_pages.dart';
 import 'package:flutter_bloc_template/modules/splash_screen.dart';
 import 'package:flutter_bloc_template/router/router_path.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
@@ -25,6 +26,13 @@ class AppRouter {
         path: RoutePath.kSplash,
         pageBuilder: (context, state) {
           return _fadeTransitionPage(context: context, child: SplashScreen());
+        },
+      ),
+      GoRoute(
+        name: 'index',
+        path: RoutePath.kIndex,
+        pageBuilder: (context, state) {
+          return _fadeTransitionPage(context: context, child: IndexPages());
         },
       )
     ]; 
