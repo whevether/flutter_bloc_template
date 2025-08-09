@@ -65,12 +65,12 @@ class AppSettingService extends Cubit<AppSettingState> {
       LocalStorageService.kLocalAuth,
       false,
     );
-    state.copyWith(
+    emit(state.copyWith(
       themeMode: themeMode,
       locale: locale,
       firstRun: firstRun,
       localAuth: localAuth,
-    );
+    ));
   }
 
   //设置主题

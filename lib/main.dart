@@ -32,6 +32,7 @@ Future<void> main() async {
         systemNavigationBarColor: Colors.transparent,
       );
       SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
+      await initServices();
       runApp(const MyApp());
     },
     (error, stackTrace) {
@@ -65,6 +66,7 @@ class MyApp extends StatelessWidget {
       minTextAdapt: true,
       splitScreenMode: true,
       child: BlocBuilder<AppSettingService, AppSettingState>(
+        bloc: AppSettingService(),
         builder: (context, state) {
           return MaterialApp.router(
             title: 'Flutter Demo',
