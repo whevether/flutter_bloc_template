@@ -15,9 +15,9 @@ class InitEvent<T> extends ListEvent<T> {
     Map<String,dynamic>? bean;
     // 请求返回数据
     if(bloc.method == 'GET') {
-      bean = await HttpClient.instance.getJson(bloc.url,queryParameters: bloc.params) as Map<String,dynamic>?;
+      bean = await HttpClient.instance.getJson(bloc.url,queryParameters: bloc.params,checkCode: true) as Map<String,dynamic>?;
     } else if(bloc.method == 'POST') {
-      bean = await HttpClient.instance.postJson(bloc.url,queryParameters: bloc.params,data: bloc.data) as Map<String,dynamic>?;
+      bean = await HttpClient.instance.postJson(bloc.url,queryParameters: bloc.params,data: bloc.data,checkCode: true) as Map<String,dynamic>?;
     }
     // 检查状态码是否正确
     if (bean == null) {
@@ -46,9 +46,9 @@ class RefreshEvent<T> extends ListEvent<T> {
     Map<String,dynamic>? bean;
     // 请求返回数据
     if(bloc.method == 'GET') {
-      bean = await HttpClient.instance.getJson(bloc.url,queryParameters: bloc.params) as Map<String,dynamic>?;
+      bean = await HttpClient.instance.getJson(bloc.url,queryParameters: bloc.params,checkCode: true) as Map<String,dynamic>?;
     } else if(bloc.method == 'POST') {
-      bean = await HttpClient.instance.postJson(bloc.url,queryParameters: bloc.params,data: bloc.data) as Map<String,dynamic>?;
+      bean = await HttpClient.instance.postJson(bloc.url,queryParameters: bloc.params,data: bloc.data,checkCode: true) as Map<String,dynamic>?;
     }
     // 检查状态码是否正确
     if (bean ==null) {

@@ -7,10 +7,10 @@ import 'package:flutter_bloc_template/app/base/ui_widget.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bloc_template/app/base/global_event_manager.dart';
 
-/// createTime: 2021/9/17 on 21:18
+/// createTime: 2025/08/11 on 21:22
 /// desc:
 ///
-/// @author azhon
+/// @author keep.wan
 
 ///UI
 abstract class BaseUIState<T extends StatefulWidget> extends State<T>

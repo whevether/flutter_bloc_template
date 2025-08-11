@@ -1,8 +1,3 @@
-/// createTime: 2021/9/17 on 17:45
-/// desc:
-///
-/// @author azhon
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc_template/app/base/ui_adapter.dart';
 import 'package:flutter_bloc_template/app/base/ui_widget.dart';

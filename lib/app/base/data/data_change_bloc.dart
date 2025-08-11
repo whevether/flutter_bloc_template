@@ -1,10 +1,10 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bloc_template/app/base/data/data_change_state.dart';
 
-/// createTime: 2021/9/30 on 10:47
+/// createTime: 2025/08/11 on 21:22
 /// desc:
 ///
-/// @author azhon
+/// @author keep.wan
 class DataChangeBloc<T> extends Cubit<DataChangeState<T?>> {
   DataChangeBloc(T? data) : super(DataChangeState(data));
 

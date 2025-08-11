@@ -2,10 +2,10 @@ import 'package:flutter_bloc_template/app/base/bloc/base_bloc.dart';
 import 'package:flutter_bloc_template/app/base/load/load_event.dart';
 import 'package:flutter_bloc_template/app/base/load/load_state.dart';
 
-/// createTime: 2021/10/21 on 14:55
+/// createTime: 2025/08/11 on 21:22
 /// desc:
 ///
-/// @author azhon
+/// @author keep.wan
 class LoadBloc extends BaseLoadBloc<LoadEvent, LoadState> {
   bool _loading = false;
 

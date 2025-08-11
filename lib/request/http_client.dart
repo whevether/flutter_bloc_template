@@ -29,13 +29,11 @@ class HttpClient {
   /// * [path] 请求链接
   /// * [queryParameters] 请求参数
   /// * [cancel] 任务取消Token
-  /// * [needLogin] 是否需要登录
   /// * [responseType] 返回的类型
   Future<dynamic> get(
     String path, {
     Map<String, dynamic>? queryParameters,
     CancelToken? cancel,
-    bool needLogin = false,
     ResponseType responseType = ResponseType.json,
     bool checkCode = false,
   }) async {
@@ -88,19 +86,16 @@ class HttpClient {
   /// * [path] 请求链接
   /// * [queryParameters] 请求参数
   /// * [cancel] 任务取消Token
-  /// * [needLogin] 是否需要登录
   Future<dynamic> getJson(
     String path, {
     Map<String, dynamic>? queryParameters,
     CancelToken? cancel,
-    bool needLogin = false,
     bool checkCode = false,
   }) async {
     return await get(
       path,
       queryParameters: queryParameters,
       cancel: cancel,
-      needLogin: needLogin,
       responseType: ResponseType.json,
       checkCode: checkCode,
     );
@@ -110,18 +105,15 @@ class HttpClient {
   /// * [path] 请求链接
   /// * [queryParameters] 请求参数
   /// * [cancel] 任务取消Token
-  /// * [needLogin] 是否需要登录
   Future<dynamic> getText(
     String path, {
     Map<String, dynamic>? queryParameters,
     CancelToken? cancel,
-    bool needLogin = false,
   }) async {
     return await get(
       path,
       queryParameters: queryParameters,
       cancel: cancel,
-      needLogin: needLogin,
       responseType: ResponseType.plain,
     );
   }
@@ -130,18 +122,15 @@ class HttpClient {
   /// * [path] 请求链接
   /// * [queryParameters] 请求参数
   /// * [cancel] 任务取消Token
-  /// * [needLogin] 是否需要登录
   Future<dynamic> getBytes(
     String path, {
     Map<String, dynamic>? queryParameters,
     CancelToken? cancel,
-    bool needLogin = false,
   }) async {
     return await get(
       path,
       queryParameters: queryParameters,
       cancel: cancel,
-      needLogin: needLogin,
       responseType: ResponseType.bytes,
     );
   }

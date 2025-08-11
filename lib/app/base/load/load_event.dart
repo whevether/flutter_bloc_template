@@ -1,8 +1,3 @@
-/// createTime: 2021/10/21 on 14:56
-/// desc:
-///
-/// @author azhon
-
 import 'package:flutter_bloc_template/app/base/bloc/base_event.dart';
 import 'package:flutter_bloc_template/app/base/load/load_bloc.dart';
 import 'package:flutter_bloc_template/app/base/load/load_state.dart';

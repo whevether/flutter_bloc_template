@@ -1,7 +1,7 @@
-/// createTime: 2023/10/19 on 14:00
+/// createTime: 2025/08/11 on 21:22
 /// desc:
 ///
-/// @author azhon
+/// @author keep.wan
 class DataChangeState<T> {
   final T? data;
 

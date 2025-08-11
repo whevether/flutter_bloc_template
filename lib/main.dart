@@ -11,6 +11,7 @@ import 'package:flutter_bloc_template/i18n/localization_intl.dart';
 import 'package:flutter_bloc_template/router/app_router.dart';
 import 'package:flutter_bloc_template/services/app_setting_service.dart';
 import 'package:flutter_bloc_template/services/local_storage_service.dart';
+import 'package:flutter_bloc_template/services/user_service.dart';
 import 'package:flutter_bloc_template/widget/status/app_loadding_widget.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
@@ -33,7 +34,7 @@ Future<void> main() async {
       );
       SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
       await initServices();
-      runApp(const MyApp());
+      runApp(MyApp());
     },
     (error, stackTrace) {
       //全局异常
@@ -65,54 +66,70 @@ class MyApp extends StatelessWidget {
       designSize: const Size(375, 812),
       minTextAdapt: true,
       splitScreenMode: true,
-      child: BlocBuilder<AppSettingService, AppSettingState>(
-        bloc: AppSettingService(),
-        builder: (context, state) {
-          return MaterialApp.router(
-            title: 'Flutter Demo',
-            scrollBehavior: AppScrollBehavior(),
-            themeMode: state.themeMode,
-            theme: AppStyle.lightTheme,
-            darkTheme: AppStyle.darkTheme,
-            localizationsDelegates: const [
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate,
-              LanguageLocalizationsDelegate(),
-            ],
+      child: MultiBlocProvider(
+        providers: [
+          // 应用设置服务
+          BlocProvider<AppSettingService>(
+            create: (BuildContext context) => AppSettingService(),
+          ),
+          // 用户状态管理
+          BlocProvider<UserBloc>(create: (BuildContext context) => UserBloc(UserState(user: null, loginResult: null))),
+        ],
+        child: BlocBuilder<UserBloc, UserState>(
+          builder: (BuildContext b, UserState s) {
+            return BlocBuilder<AppSettingService, AppSettingState>(
+              buildWhen: (previous, current) =>
+                  previous.themeMode != current.themeMode ||
+                  previous.locale != current.locale,
+              builder: (BuildContext context, AppSettingState state) {
+                return MaterialApp.router(
+                  title: 'Flutter BLoc Template',
+                  scrollBehavior: AppScrollBehavior(),
+                  themeMode: state.themeMode,
+                  theme: AppStyle.lightTheme,
+                  darkTheme: AppStyle.darkTheme,
+                  localizationsDelegates: const [
+                    GlobalMaterialLocalizations.delegate,
+                    GlobalWidgetsLocalizations.delegate,
+                    GlobalCupertinoLocalizations.delegate,
+                    LanguageLocalizationsDelegate(),
+                  ],
 
-            // routerConfig: AppRouter.instance.router,
-            routeInformationProvider:
-                AppRouter.instance.router.routeInformationProvider,
-            routeInformationParser:
-                AppRouter.instance.router.routeInformationParser,
-            routerDelegate: AppRouter.instance.router.routerDelegate,
-            locale: state.locale,
-            supportedLocales: const [
-              Locale("zh", "CN"),
-              Locale("en", "US"),
-              Locale("zh", "HK"),
-              Locale("vi", "VN"),
-              Locale("th", "TH"),
-              Locale("in", "ID"),
-              Locale("hi", "IN"),
-              Locale("en", "PH"),
-              Locale("ms", "MY"),
-            ],
-            debugShowCheckedModeBanner: false,
-            // navigatorObservers: [FlutterSmartDialog.observer],
-            builder: FlutterSmartDialog.init(
-              loadingBuilder: ((msg) => AppLoaddingWidget(msg: msg)),
-              //字体大小不跟随系统变化
-              builder: (context, child) => MediaQuery(
-                data: MediaQuery.of(
-                  context,
-                ).copyWith(textScaler: const TextScaler.linear(1.0)),
-                child: child!,
-              ),
-            ),
-          );
-        },
+                  // routerConfig: AppRouter.instance.router,
+                  routeInformationProvider:
+                      AppRouter.instance.router.routeInformationProvider,
+                  routeInformationParser:
+                      AppRouter.instance.router.routeInformationParser,
+                  routerDelegate: AppRouter.instance.router.routerDelegate,
+                  locale: state.locale,
+                  supportedLocales: const [
+                    Locale("zh", "CN"),
+                    Locale("en", "US"),
+                    Locale("zh", "HK"),
+                    Locale("vi", "VN"),
+                    Locale("th", "TH"),
+                    Locale("in", "ID"),
+                    Locale("hi", "IN"),
+                    Locale("en", "PH"),
+                    Locale("ms", "MY"),
+                  ],
+                  debugShowCheckedModeBanner: false,
+                  // navigatorObservers: [FlutterSmartDialog.observer],
+                  builder: FlutterSmartDialog.init(
+                    loadingBuilder: ((msg) => AppLoaddingWidget(msg: msg)),
+                    //字体大小不跟随系统变化
+                    builder: (context, child) => MediaQuery(
+                      data: MediaQuery.of(
+                        context,
+                      ).copyWith(textScaler: const TextScaler.linear(1.0)),
+                      child: child!,
+                    ),
+                  ),
+                );
+              },
+            );
+          },
+        ),
       ),
     );
   }

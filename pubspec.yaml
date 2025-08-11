@@ -60,8 +60,6 @@ dependencies:
   replay_bloc: ^0.3.0 #状态管理增强
   bloc_concurrency: ^0.3.0 #状态管理增强
   water_drop_nav_bar: ^2.2.2 #水滴导航栏
-  bloc_test: ^10.0.0 #状态管理测试
-  bloc_lint: ^0.2.1 #状态管理lint
   lottie: ^3.3.1 #动画
 
 dev_dependencies:
@@ -87,6 +85,7 @@ flutter:
   uses-material-design: true
   assets: 
     - assets/lotties/
+    - assets/images/
 
   # To add assets to your application, add an assets section, like this:
   # assets:

@@ -24,6 +24,7 @@ class MessageLookup extends MessageLookupByLibrary {
   @override
   final Map<String, dynamic> messages = _notInlinedMessages(_notInlinedMessages);
 
+  // ignore: strict_top_level_inference
   static Map<String, dynamic> _notInlinedMessages(_) => {
       'cancel': MessageLookupByLibrary.simpleMessage('Cancel'),
     'yes': MessageLookupByLibrary.simpleMessage('Yes')

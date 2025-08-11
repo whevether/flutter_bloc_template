@@ -4,10 +4,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bloc_template/app/base/load/load_bloc.dart';
 import 'package:flutter_bloc_template/app/base/loading_state.dart';
 
-/// createTime: 2021/9/29 on 16:49
+/// createTime: 2025/08/11 on 21:22
 /// desc:
 ///
-/// @author azhon
+/// @author keep.wan
 
 abstract class BaseLoadBloc<E extends BaseEvent, S> extends Bloc<E, S> {
   BaseLoadBloc(super.initialState) {

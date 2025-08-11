@@ -2,10 +2,10 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
-/// createTime: 2023/12/1 on 16:56
+/// createTime: 2025/08/11 on 21:22
 /// desc: app global events
 ///
-/// @author azhon
+/// @author keep.wan
 
 typedef GlobalEventCallBack = Function(String type, String? data);
 

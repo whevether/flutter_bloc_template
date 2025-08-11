@@ -10,7 +10,7 @@ class AppConstant {
    //头像缓存路径
   static const String avatarCache = 'avatarCache';
   //api地址
-  static String serverUrl = 'api.example.com';
+  static String serverUrl = 'http://192.168.1.8:5900';
   //成功状态码
   static const int successCode = 200;
   //默认状态码

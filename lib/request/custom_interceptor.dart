@@ -1,13 +1,14 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_bloc_template/app/app_constant.dart';
 import 'package:flutter_bloc_template/app/log.dart';
+import 'package:flutter_bloc_template/services/local_storage_service.dart';
 
 class CustomInterceptor extends Interceptor {
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
     options.extra["ts"] = DateTime.now().millisecondsSinceEpoch;
-    // options.headers["Authorization"] =
-    //     '${UserService.instance.loginResult.value?.tokenType ?? 'Bearer'} ${UserService.instance.loginResult.value?.token ?? ''}';
+    String token = LocalStorageService.instance.getValue(LocalStorageService.kToken, '');
+    options.headers["Authorization"] = token.isNotEmpty ? 'Bearer $token' : "";
     // var local = AppSettingsService.instance.locale.value;
     // options.headers["Accept-Language"] = local != null ? "${local.languageCode}-${local.countryCode}" : ""; 
     super.onRequest(options, handler);
@@ -27,7 +28,6 @@ Request Headers：${err.requestOptions.headers}
 Response Headers：${err.response?.headers.map}
 Response Data：${err.response?.data}''', err.stackTrace);
     if (err.response?.statusCode == AppConstant.notAuthCode || err.response?.statusCode == AppConstant.noPermissionCode) {
-      
     }
     super.onError(err, handler);
   }

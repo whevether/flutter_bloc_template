@@ -19,6 +19,8 @@ class LocalStorageService {
   static const String kLanguage = 'kLanguage';
   //设置跳过更新版本
   static const String kSkipVersion = 'kSkipVersion';
+  // token
+  static const String kToken = "token";
   //单例
   static LocalStorageService get instance => _getInstance();
   //缓存实例
