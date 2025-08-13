@@ -1,6 +1,10 @@
 // import 'dart:io';
 
 // import 'package:extended_image/extended_image.dart';
+import 'package:flutter_bloc_template/app/log.dart';
+import 'package:flutter_bloc_template/app/utils.dart';
+import 'package:flutter_bloc_template/request/common_request.dart';
+import 'package:flutter_bloc_template/services/local_storage_service.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:flutter_bloc_template/app/app_color.dart';
 // import 'package:flutter_bloc_template/app/app_constant.dart';
@@ -320,103 +324,100 @@ class DialogUtils {
     return result;
   }
 
-  // /// 检查更新
-  // static void checkUpdate({bool showMsg = false}) async {
-  //   try {
-  //     int currentVer = Utils.parseVersion(Utils.packageInfo.version);
-  //     CommonRequest request = CommonRequest();
-  //     var versionInfo = await request.checkUpdate();
-  //     if (versionInfo == null) {
-  //       return;
-  //     }
-  //     int skipVersion = AppSettingsService.instance.skipUpdateVersion.value;
-  //     int version = Utils.parseVersion(versionInfo.versionNo);
-  //     if (version > currentVer &&
-  //         versionInfo.updateStatus == 1 &&
-  //         version > skipVersion) {
-  //       var result = await showBottomSheetCommon<bool>(
-  //         [
-  //           Column(
-  //             children: [
-  //               const SizedBox(
-  //                 height: 36,
-  //               ),
-  //               buildBottomSheetHeader(
-  //                   showClose: false,
-  //                   closeColor: AppColor.backgroundColorDark,
-  //                   title: "发现新版本 v${versionInfo.versionNo}"),
-  //               const SizedBox(
-  //                 height: 10,
-  //               ),
-  //               SizedBox(
-  //                 width: double.infinity,
-  //                 height: 200,
-  //                 child: SingleChildScrollView(
-  //                   child: Column(
-  //                     children: [
-  //                       Image.asset(
-  //                         'assets/images/logo.png',
-  //                         fit: BoxFit.fill,
-  //                         height: 80,
-  //                         alignment: Alignment.center,
-  //                       ),
-  //                       const SizedBox(
-  //                         height: 10,
-  //                       ),
-  //                       Text(
-  //                         versionInfo.versionName,
-  //                         style: TextStyle(
-  //                             fontSize: 16,
-  //                             color: AppColor.backgroundColorDark),
-  //                       ),
-  //                       const SizedBox(
-  //                         height: 10,
-  //                       ),
-  //                       Text(
-  //                         versionInfo.content,
-  //                         style: TextStyle(
-  //                             fontSize: 16,
-  //                             color: AppColor.backgroundColorDark),
-  //                       ),
-  //                     ],
-  //                   ),
-  //                 ),
-  //               ),
-  //               const Spacer(),
-  //               buildActionWidget(
-  //                   submitText: '去下载',
-  //                   cancelText: versionInfo.updateType == 0 ? null : '跳过',
-  //                   onCancel: () {
-  //                     SmartDialog.dismiss(result: false);
-  //                   },
-  //                   onSubmit: () {
-  //                     SmartDialog.dismiss(result: true);
-  //                   }),
-  //             ],
-  //           )
-  //         ],
-  //         'updateApp',
-  //         showTopBorder: true,
-  //         backgroundColor: AppColor.backgroundColor,
-  //         clickMaskDismiss: false,
-  //       );
-  //       if (result == true) {
-  //         Utils.openLaunchUrlString(versionInfo.downUrl);
-  //       } else {
-  //         if (versionInfo.updateType == 2) {
-  //           AppSettingsService.instance.setSkipUpdateVersion(version);
-  //         }
-  //       }
-  //     } else {
-  //       if (showMsg) {
-  //         SmartDialog.showToast("当前已经是最新版本了");
-  //       }
-  //     }
-  //   } catch (e) {
-  //     Log.logPrint(e);
-  //     if (showMsg) {
-  //       SmartDialog.showToast("检查更新失败");
-  //     }
-  //   }
-  // }
+  /// 检查更新
+  static void checkUpdate({bool showMsg = false}) async {
+    try {
+      int currentVer = Utils.parseVersion(Utils.packageInfo.version);
+      CommonRequest request = CommonRequest();
+      var versionInfo = await request.checkUpdate();
+      if (versionInfo == null) {
+        return;
+      }
+      int skipVersion = LocalStorageService.instance.getValue(
+        LocalStorageService.kSkipVersion,
+        0,
+      );
+      int version = Utils.parseVersion(versionInfo.versionNo);
+      if (version > currentVer &&
+          versionInfo.updateStatus == 1 &&
+          version > skipVersion) {
+        var result = await showBottomSheetCommon<bool>(
+          [
+            Column(
+              children: [
+                const SizedBox(height: 36),
+                buildBottomSheetHeader(
+                  showClose: false,
+                  closeColor: AppColor.backgroundColorDark,
+                  title: "发现新版本 v${versionInfo.versionNo}",
+                ),
+                const SizedBox(height: 10),
+                SizedBox(
+                  width: double.infinity,
+                  height: 200,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        Icon(Icons.system_update),
+                        const SizedBox(height: 10),
+                        Text(
+                          versionInfo.versionName,
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: AppColor.backgroundColorDark,
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        Text(
+                          versionInfo.content,
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: AppColor.backgroundColorDark,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                const Spacer(),
+                buildActionWidget(
+                  submitText: '去下载',
+                  cancelText: versionInfo.updateType == 0 ? null : '跳过',
+                  onCancel: () {
+                    SmartDialog.dismiss(result: false);
+                  },
+                  onSubmit: () {
+                    SmartDialog.dismiss(result: true);
+                  },
+                ),
+              ],
+            ),
+          ],
+          'updateApp',
+          showTopBorder: true,
+          backgroundColor: AppColor.backgroundColor,
+          clickMaskDismiss: false,
+        );
+        if (result == true) {
+          Utils.openLaunchUrlString(versionInfo.downUrl);
+        } else {
+          if (versionInfo.updateType == 2) {
+            LocalStorageService.instance.setValue(
+              version,
+              LocalStorageService.kSkipVersion,
+            );
+          }
+        }
+      } else {
+        if (showMsg) {
+          SmartDialog.showToast("当前已经是最新版本了");
+        }
+      }
+    } catch (e) {
+      Log.logPrint(e);
+      if (showMsg) {
+        SmartDialog.showToast("检查更新失败");
+      }
+    }
+  }
 }

@@ -3,24 +3,24 @@ import 'dart:convert';
 import 'package:flutter_bloc_template/model/base_model.dart';
 
 class UserModel {
-  String userId;
-  String userName;
-  String avatarUrl;
-  int age;
-  int sex;
+  String id;
+  String username;
+  String? avatar;
+  int? age;
+  int? sex;
   UserModel({
-    required this.userId,
-    required this.userName,
-    required this.avatarUrl,
-    required this.age,
-    required this.sex,
+    required this.id,
+    required this.username,
+    this.avatar,
+    this.age,
+    this.sex,
   });
   factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
-    userId: asT<String>(json['userId'])!,
-    userName: asT<String>(json['userName'])!,
-    avatarUrl: asT<String>(json['avatarUrl'])!,
-    age: asT<int>(json['age'])!,
-    sex: asT<int>(json['sex'])!,
+    id: asT<String>(json['id'])!,
+    username: asT<String>(json['username'])!,
+    avatar: asT<String>(json['avatar']),
+    age: asT<int>(json['age']),
+    sex: asT<int>(json['sex']),
   );
   @override
   String toString() {
@@ -28,9 +28,9 @@ class UserModel {
   }
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'userId': userId,
-    'userName': userName,
-    'avatarUrl': avatarUrl,
+    'id': id,
+    'username': username,
+    'avatar': avatar,
     'age': age,
     'sex': sex,
   };

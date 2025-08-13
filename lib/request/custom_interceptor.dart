@@ -1,14 +1,23 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bloc_template/app/app_constant.dart';
 import 'package:flutter_bloc_template/app/log.dart';
+import 'package:flutter_bloc_template/model/login_result_model.dart';
+import 'package:flutter_bloc_template/router/app_router.dart';
 import 'package:flutter_bloc_template/services/local_storage_service.dart';
+import 'package:flutter_bloc_template/services/user_service.dart';
 
 class CustomInterceptor extends Interceptor {
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
     options.extra["ts"] = DateTime.now().millisecondsSinceEpoch;
-    String token = LocalStorageService.instance.getValue(LocalStorageService.kToken, '');
-    options.headers["Authorization"] = token.isNotEmpty ? 'Bearer $token' : "";
+    String loginResult = LocalStorageService.instance.getValue(LocalStorageService.kToken, '');
+    if (loginResult.isNotEmpty) {
+      var token = LoginResultModel.fromJson(json.decode(loginResult));
+      options.headers["Authorization"] = '${token.tokenType} ${token.token}';
+    }
     // var local = AppSettingsService.instance.locale.value;
     // options.headers["Accept-Language"] = local != null ? "${local.languageCode}-${local.countryCode}" : ""; 
     super.onRequest(options, handler);
@@ -28,6 +37,10 @@ Request Headers：${err.requestOptions.headers}
 Response Headers：${err.response?.headers.map}
 Response Data：${err.response?.data}''', err.stackTrace);
     if (err.response?.statusCode == AppConstant.notAuthCode || err.response?.statusCode == AppConstant.noPermissionCode) {
+      var currentContext = AppRouter.instance.navigatorKey.currentContext;
+      if (currentContext != null) {
+        currentContext.read<UserBloc>().logout();
+      }
     }
     super.onError(err, handler);
   }

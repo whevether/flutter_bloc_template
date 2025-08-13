@@ -14,10 +14,12 @@ class AppRouter {
   GoRouter get router => _router;
   // router单例
   static final instance = AppRouter._();
+  final GlobalKey<NavigatorState> navigatorKey = GlobalKey();
   // 路由列表
   AppRouter._() {
     _router = GoRouter(
       routes: _routes,
+      navigatorKey: navigatorKey,
       observers: [FlutterSmartDialog.observer],
       initialLocation: RoutePath.kSplash,
     );

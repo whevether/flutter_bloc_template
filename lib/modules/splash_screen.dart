@@ -1,10 +1,6 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc_template/app/base/base_state.dart';
 import 'package:flutter_bloc_template/app/base/base_stateful_widget.dart';
-import 'package:flutter_bloc_template/router/router_path.dart';
-import 'package:go_router/go_router.dart';
 import 'package:lottie/lottie.dart';
 
 class SplashScreen extends BaseStatefulWidget {
@@ -18,13 +14,6 @@ class _SplashScreenState extends BaseState<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    unawaited(
-      Future.delayed(const Duration(seconds: 1), () {
-        if (mounted) {
-          super.context.go(RoutePath.kIndex);
-        }
-      }),
-    );
   }
 
   @override

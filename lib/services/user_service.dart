@@ -1,12 +1,11 @@
 import 'dart:convert';
 
+import 'package:flutter_bloc_template/app/app_constant.dart';
 import 'package:flutter_bloc_template/app/base/bloc/base_bloc.dart';
 import 'package:flutter_bloc_template/app/base/bloc/base_event.dart';
 import 'package:flutter_bloc_template/model/login_result_model.dart';
 import 'package:flutter_bloc_template/model/user_model.dart';
 import 'package:flutter_bloc_template/request/http_client.dart';
-// import 'package:flutter_bloc_template/router/app_router.dart';
-// import 'package:flutter_bloc_template/router/router_path.dart';
 import 'package:flutter_bloc_template/services/local_storage_service.dart';
 
 // 用户状态
@@ -34,12 +33,27 @@ class UserLoginEvent extends UserEvent {
       bloc.loadError(Exception("Login failed"));
       return UserState(user: currentState.user, loginResult: null);
     }
-    LoginResultModel loginResult = LoginResultModel.fromJson(result['result']);
+    LoginResultModel loginResult = LoginResultModel.fromJson(
+      result[AppConstant.resultKey],
+    );
     LocalStorageService.instance.setValue(
       LocalStorageService.kToken,
       loginResult.toString(),
     );
-    // AppRouter.instance.router.go(RoutePath.kIndex);
+    if (currentState.user == null) {
+      //获取用户信息
+      var result =
+          await HttpClient.instance.get(
+                '/api/asf/account/accountinfo',
+                checkCode: true,
+              )
+              as Map<String, dynamic>?;
+      if (result == null) {
+        return UserState(user: null, loginResult: loginResult);
+      }
+      UserModel userModel = UserModel.fromJson(result[AppConstant.resultKey]);
+      return UserState(user: userModel, loginResult: loginResult);
+    }
     return UserState(user: currentState.user, loginResult: loginResult);
   }
 }
@@ -54,42 +68,46 @@ class UserLogoutEvent extends UserEvent {
   }
 }
 
-//用户信息事件
-class UserInfoEvent extends UserEvent {
-  final Map<String, dynamic> data;
-  final String url;
-  UserInfoEvent(this.data, this.url);
-  @override
-  Future<UserState> on(UserBloc bloc, UserState currentState) async {
-    //获取用户信息
-    var result =
-        await HttpClient.instance.get(url, queryParameters: data,checkCode: true)
-            as Map<String, dynamic>?;
-    if (result == null) {
-      return UserState(user: null, loginResult: currentState.loginResult);
-    }
-    UserModel userModel = UserModel.fromJson(result['result']);
-    return UserState(user: userModel, loginResult: currentState.loginResult);
-  }
-}
 //从缓存初始化登录数据
 class InitLoginResultEvent extends UserEvent {
   @override
   Future<UserState> on(UserBloc bloc, UserState currentState) async {
     //从缓存获取登录结果
-    var loginResult = LocalStorageService.instance.getValue(LocalStorageService.kToken,'');
+    var loginResult = LocalStorageService.instance.getValue(
+      LocalStorageService.kToken,
+      '',
+    );
     if (loginResult.isNotEmpty) {
-      return UserState(
-        user: currentState.user,
-        loginResult: LoginResultModel.fromJson(json.decode(loginResult)),
-      );
+      if (currentState.user == null) {
+        //获取用户信息
+        var result =
+            await HttpClient.instance.get(
+                  '/api/asf/account/accountinfo',
+                  checkCode: true,
+                )
+                as Map<String, dynamic>?;
+        if (result == null) {
+          return UserState(user: null, loginResult: LoginResultModel.fromJson(json.decode(loginResult)));
+        }
+        UserModel userModel = UserModel.fromJson(result[AppConstant.resultKey]);
+        return UserState(
+          user: userModel,
+          loginResult: LoginResultModel.fromJson(json.decode(loginResult)),
+        );
+      } else {
+        return UserState(
+          user: currentState.user,
+          loginResult: LoginResultModel.fromJson(json.decode(loginResult)),
+        );
+      }
     }
     return UserState(user: currentState.user, loginResult: null);
   }
 }
+
 //用户Bloc
 class UserBloc extends BaseBloc<UserEvent, UserState> {
-  UserBloc(super.initialState){
+  UserBloc(super.initialState) {
     initLoginResult();
   }
   //登录
@@ -102,10 +120,6 @@ class UserBloc extends BaseBloc<UserEvent, UserState> {
     add(UserLogoutEvent());
   }
 
-  //获取用户信息
-  Future<void> getUserInfo(Map<String, dynamic> data, String url) async {
-    add(UserInfoEvent(data, url));
-  }
   //初始化登录结果
   Future<void> initLoginResult() async {
     add(InitLoginResultEvent());

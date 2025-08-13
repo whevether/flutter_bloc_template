@@ -9,7 +9,7 @@ class ListBloc<T> extends BaseBloc<ListEvent<T>, ListState<T>> {
   ///初始页码
   final int startPageNum;
   //传递query参数
-  final Map<String, dynamic> params;
+  final Map<String, dynamic>? params;
   //传递data参数
   final Map<String, dynamic>? data;
   //请求地址
@@ -25,7 +25,7 @@ class ListBloc<T> extends BaseBloc<ListEvent<T>, ListState<T>> {
 
   ListBloc({
     required this.url,
-    this.params = const <String, dynamic>{},
+    this.params,
     this.data,
     this.pageSize = 15,
     this.method = 'GET',
@@ -63,14 +63,12 @@ class ListBloc<T> extends BaseBloc<ListEvent<T>, ListState<T>> {
   }
   //
   void _changeParams() {
-    if (params.isNotEmpty) {
-      params['page'] = pageNum;
-      params['pageSize'] = pageSize;
-    } else {
-      params.addAll({
-        'page': pageNum,
-        'pageSize': pageSize,
-      });
+    if (params != null) {
+      params!['pageNo'] = pageNum;
+      params!['pageSize'] = pageSize;
+    }else if(data != null) {
+      data!['pageNo'] = pageNum;
+      data!['pageSize'] = pageSize;
     }
   }
   //

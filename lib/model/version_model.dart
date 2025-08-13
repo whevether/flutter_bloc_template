@@ -4,7 +4,7 @@ import 'package:flutter_bloc_template/model/base_model.dart';
 
 class VersionModel {
   VersionModel({
-    required this.wrapName,
+    this.wrapName,
     required this.osType,
     required this.versionNo,
     required this.versionName,
@@ -17,7 +17,7 @@ class VersionModel {
   });
 
   factory VersionModel.fromJson(Map<String, dynamic> json) => VersionModel(
-    wrapName: asT<String>(json['wrapName'])!,
+    wrapName: asT<String>(json['wrapName']),
     osType: asT<int>(json['osType'])!,
     versionNo: asT<String>(json['versionNo'])!,
     versionName: asT<String>(json['versionName'])!,
@@ -28,7 +28,7 @@ class VersionModel {
     updateType: asT<int>(json['updateType'])!,
     createTime: asT<int>(json['createTime'])!,
   );
-  String wrapName;
+  String? wrapName;
   int osType;
   String versionNo;
   String versionName;

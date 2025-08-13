@@ -275,14 +275,14 @@ class AppSettingService extends Cubit<AppSettingState> {
         false,
       );
       emit(state.copyWith(firstRun: false));
-      // DialogUtils.checkUpdate();
+      DialogUtils.checkUpdate();
     } else {
       await LocalStorageService.instance.setValue(
         LocalStorageService.kFirstRun,
         true,
       );
       emit(state.copyWith(firstRun: true));
-      // DialogUtils.checkUpdate();
+      DialogUtils.checkUpdate();
     }
   }
 }

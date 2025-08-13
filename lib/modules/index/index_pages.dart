@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bloc_template/app/app_color.dart';
 import 'package:flutter_bloc_template/app/base/base_state.dart';
 import 'package:flutter_bloc_template/app/base/base_stateful_widget.dart';
@@ -7,6 +8,7 @@ import 'package:flutter_bloc_template/modules/index/chat_pages.dart';
 import 'package:flutter_bloc_template/modules/index/find_pages.dart';
 import 'package:flutter_bloc_template/modules/index/home_pages.dart';
 import 'package:flutter_bloc_template/modules/index/my_pages.dart';
+import 'package:flutter_bloc_template/services/app_setting_service.dart';
 import 'package:flutter_bloc_template/widget/data_change_widget.dart';
 import 'package:water_drop_nav_bar/water_drop_nav_bar.dart';
 
@@ -24,6 +26,7 @@ class _IndexPagesState extends BaseState<IndexPages> {
   @override
   void initState() {
     super.initState();
+    super.context.read<AppSettingService>().showFirstRun();
     _selectIndex = DataChangeBloc<int>(0);
   }
   @override

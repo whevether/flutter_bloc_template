@@ -9,6 +9,7 @@ import 'package:flutter_bloc_template/app/log.dart';
 import 'package:flutter_bloc_template/app/utils.dart';
 import 'package:flutter_bloc_template/i18n/localization_intl.dart';
 import 'package:flutter_bloc_template/router/app_router.dart';
+import 'package:flutter_bloc_template/router/router_path.dart';
 import 'package:flutter_bloc_template/services/app_setting_service.dart';
 import 'package:flutter_bloc_template/services/local_storage_service.dart';
 import 'package:flutter_bloc_template/services/user_service.dart';
@@ -75,9 +76,18 @@ class MyApp extends StatelessWidget {
           // 用户状态管理
           BlocProvider<UserBloc>(create: (BuildContext context) => UserBloc(UserState(user: null, loginResult: null))),
         ],
-        child: BlocBuilder<UserBloc, UserState>(
-          builder: (BuildContext b, UserState s) {
-            return BlocBuilder<AppSettingService, AppSettingState>(
+        child: BlocListener<UserBloc, UserState>(
+          listener: (BuildContext b, UserState s) {
+            // 用户登录状态变化监听
+            if (s.loginResult == null) {
+              Log.d("User logged out");
+              AppRouter.instance.router.go(RoutePath.kUserLogin);
+            } else if(s.loginResult?.token != null) {
+              Log.d("User logged in: ${s.loginResult?.token}");
+              AppRouter.instance.router.go(RoutePath.kIndex);
+            }
+          },
+          child: BlocBuilder<AppSettingService, AppSettingState>(
               buildWhen: (previous, current) =>
                   previous.themeMode != current.themeMode ||
                   previous.locale != current.locale,
@@ -94,8 +104,6 @@ class MyApp extends StatelessWidget {
                     GlobalCupertinoLocalizations.delegate,
                     LanguageLocalizationsDelegate(),
                   ],
-
-                  // routerConfig: AppRouter.instance.router,
                   routeInformationProvider:
                       AppRouter.instance.router.routeInformationProvider,
                   routeInformationParser:
@@ -127,8 +135,7 @@ class MyApp extends StatelessWidget {
                   ),
                 );
               },
-            );
-          },
+            ),
         ),
       ),
     );
