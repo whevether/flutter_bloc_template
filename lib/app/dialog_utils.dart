@@ -333,7 +333,7 @@ class DialogUtils {
       if (versionInfo == null) {
         return;
       }
-      int skipVersion = LocalStorageService.instance.getValue(
+      int skipVersion = LocalStorageService.instance.getValue<int>(
         LocalStorageService.kSkipVersion,
         0,
       );
@@ -402,9 +402,9 @@ class DialogUtils {
           Utils.openLaunchUrlString(versionInfo.downUrl);
         } else {
           if (versionInfo.updateType == 2) {
-            LocalStorageService.instance.setValue(
-              version,
+            LocalStorageService.instance.setValue<int>(
               LocalStorageService.kSkipVersion,
+              version,
             );
           }
         }

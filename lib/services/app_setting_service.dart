@@ -270,14 +270,14 @@ class AppSettingService extends Cubit<AppSettingState> {
   //首次运行
   void showFirstRun() async {
     if (state.firstRun == true) {
-      await LocalStorageService.instance.setValue(
+      await LocalStorageService.instance.setValue<bool>(
         LocalStorageService.kFirstRun,
         false,
       );
       emit(state.copyWith(firstRun: false));
       DialogUtils.checkUpdate();
     } else {
-      await LocalStorageService.instance.setValue(
+      await LocalStorageService.instance.setValue<bool>(
         LocalStorageService.kFirstRun,
         true,
       );
