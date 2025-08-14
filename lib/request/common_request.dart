@@ -40,7 +40,7 @@ class CommonRequest {
   //获取用户信息
   Future<UserModel?> getUserInfo() async {
     var result = await HttpClient.instance.getJson(
-      "/api/asf/authorise/login",
+      "/api/asf/account/accountinfo",
       checkCode: true,
     );
     if (result[AppConstant.resultKey] == null) {
