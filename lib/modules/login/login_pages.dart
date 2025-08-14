@@ -20,7 +20,7 @@ class _LoginPagesState extends BaseState<LoginPages> {
       body: Center(
         child: ElevatedButton(onPressed: (){
           // 触发登录事件
-          context.read<UserBloc>().login({'loginType': 'account','username': 'admin', 'password': 'admin','tenancyId': '1'}, '/api/asf/authorise/login');
+          context.read<UserBloc>().login({'loginType': 'account','username': 'admin', 'password': 'admin','tenancyId': '1'});
         }, child: const Text('登录'),),
       ),
     );
