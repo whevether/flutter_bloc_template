@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+// import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bloc_template/modules/index/index_pages.dart';
 import 'package:flutter_bloc_template/modules/login/login_pages.dart';
 import 'package:flutter_bloc_template/modules/splash_screen.dart';
 import 'package:flutter_bloc_template/router/router_path.dart';
-import 'package:flutter_bloc_template/services/user_service.dart';
+// import 'package:flutter_bloc_template/services/user_service.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:go_router/go_router.dart';
 
@@ -39,13 +39,13 @@ class AppRouter {
         pageBuilder: (context, state) {
           return _fadeTransitionPage(context: context, child: LoginPages());
         },
-        redirect: (context, state) {
-          var userState = context.read<UserBloc>().state;
-          if (userState.loginResult?.token != null) {
-            return RoutePath.kIndex;
-          }
-          return null;
-        },
+        // redirect: (context, state) {
+        //   var userState = context.read<UserBloc>().state;
+        //   if (userState.loginResult?.token != null) {
+        //     return RoutePath.kIndex;
+        //   }
+        //   return null;
+        // },
       ),
       GoRoute(
         name: 'index',
@@ -53,13 +53,13 @@ class AppRouter {
         pageBuilder: (context, state) {
           return _fadeTransitionPage(context: context, child: IndexPages());
         },
-        redirect: (context, state) {
-          var userState = context.read<UserBloc>().state;
-          if (userState.loginResult?.token == null) {
-            return RoutePath.kUserLogin;
-          }
-          return null;
-        },
+        // redirect: (context, state) {
+        //   var userState = context.read<UserBloc>().state;
+        //   if (userState.loginResult?.token == null) {
+        //     return RoutePath.kUserLogin;
+        //   }
+        //   return null;
+        // },
       ),
     ];
   }
