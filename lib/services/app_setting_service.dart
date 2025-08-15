@@ -13,6 +13,7 @@ import 'package:local_auth/error_codes.dart' as auth_error;
 
 // App设置状态
 class AppSettingState {
+  //PlatformDispatcher.instance.locale
   //主题
   final ThemeMode? themeMode;
   //语言
