@@ -15,7 +15,7 @@ class _HomePagesState extends BaseState<HomePages> {
   @override
   void initState() {
     super.initState();
-    _listBloc = ListBloc<Map<String,dynamic>>(url: '/api/asf/audio/getloglist',startPageNum: 1,params: {'logType': 1});
+    _listBloc = ListBloc<Map<String,dynamic>>(url: '/api/asf/audio/getloglist',startPageNum: 1,params: {});
   }
 
   @override

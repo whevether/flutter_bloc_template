@@ -57,8 +57,8 @@ dependencies:
   connectivity_plus: ^6.1.5 #网络连接状态
   flutter_screenutil: ^5.9.3 #屏幕适配
   flutter_bloc: ^9.1.1 #状态管理
-  replay_bloc: ^0.3.0 #状态管理增强
-  bloc_concurrency: ^0.3.0 #状态管理增强
+  replay_bloc: ^0.3.0 #bloc 状态增强,恢复/撤销 
+  bloc_concurrency: ^0.3.0 # #bloc 状态增强 处理并发事件
   water_drop_nav_bar: ^2.2.2 #水滴导航栏
   lottie: ^3.3.1 #动画
 

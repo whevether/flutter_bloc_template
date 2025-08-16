@@ -1,15 +1,16 @@
+import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc_template/app/base/bloc/base_event.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bloc_template/app/base/load/load_bloc.dart';
 import 'package:flutter_bloc_template/app/base/loading_state.dart';
+import 'package:replay_bloc/replay_bloc.dart';
 
 /// createTime: 2025/08/11 on 21:22
 /// desc:
 ///
 /// @author keep.wan
 
-abstract class BaseLoadBloc<E extends BaseEvent, S> extends Bloc<E, S> {
+abstract class BaseLoadBloc<E extends BaseEvent, S> extends ReplayBloc<E, S> {
   BaseLoadBloc(super.initialState) {
     _init();
   }
@@ -30,7 +31,7 @@ abstract class BaseLoadBloc<E extends BaseEvent, S> extends Bloc<E, S> {
         emit.call(resultState);
       }
       onStateChange(resultState);
-    });
+    },transformer: sequential());
   }
 
   ///状态变更
