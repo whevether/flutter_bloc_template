@@ -5,8 +5,12 @@ import 'package:flutter_bloc_template/app/app_color.dart';
 class AppStyle {
   static ThemeData lightTheme = ThemeData.light().copyWith(
     brightness: Brightness.light,
+    primaryColor: Colors.blue,
     colorScheme: AppColor.colorSchemeLight,
     scaffoldBackgroundColor: Colors.white,
+    tabBarTheme: const TabBarThemeData(
+      indicatorColor: Colors.blue,
+    ),
     appBarTheme: AppBarTheme(
       elevation: 0,
       backgroundColor: Colors.transparent,
@@ -32,11 +36,11 @@ class AppStyle {
   );
   static ThemeData darkTheme = ThemeData.dark().copyWith(
     brightness: Brightness.dark,
-    primaryColor: Colors.pink,
+    primaryColor: Colors.blue,
     colorScheme: AppColor.colorSchemeDark,
     scaffoldBackgroundColor: Colors.black,
     tabBarTheme: const TabBarThemeData(
-      indicatorColor: Colors.pink,
+      indicatorColor: Colors.blue,
     ),
     appBarTheme: AppBarTheme(
       elevation: 0,

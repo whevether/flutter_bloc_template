@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 
 class AppColor {
   static ColorScheme colorSchemeLight = ColorScheme.fromSwatch(
-    primarySwatch: Colors.pink,
+    primarySwatch: Colors.blue,
+    accentColor: Colors.blue,
     brightness: Brightness.light,
   );
   static ColorScheme colorSchemeDark = ColorScheme.fromSwatch(
-    primarySwatch: Colors.pink,
-    accentColor: Colors.pink,
+    primarySwatch: Colors.blue,
+    accentColor: Colors.blue,
     // primaryColorDark: Colors.blue,
     brightness: Brightness.dark,
   );

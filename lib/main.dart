@@ -95,13 +95,10 @@ class MyApp extends StatelessWidget {
               }
             }
           },
-          child: BlocConsumer<AppSettingService, AppSettingState>(
+          child: BlocBuilder<AppSettingService, AppSettingState>(
               buildWhen: (previous, current) =>
                   previous.themeMode != current.themeMode ||
-                  previous.locale != current.locale,
-              listener:(context, state){
-                Log.d('${state.themeMode},${state.locale}');
-              },
+                  previous.locale != current.locale || previous.firstRun != current.firstRun || previous.localAuth != current.localAuth,
               builder: (BuildContext context, AppSettingState state) {
                 return MaterialApp.router(
                   title: 'Flutter BLoc Template',

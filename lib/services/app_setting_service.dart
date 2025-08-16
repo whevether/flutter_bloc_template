@@ -34,10 +34,10 @@ class AppSettingState {
     bool? localAuth,
   }) {
     return AppSettingState(
-      themeMode: themeMode,
-      locale: locale,
-      firstRun: firstRun,
-      localAuth: localAuth,
+      themeMode: themeMode ?? this.themeMode,
+      locale: locale ?? this.locale,
+      firstRun: firstRun ?? this.firstRun,
+      localAuth: localAuth ??this.localAuth,
     );
   }
 }
@@ -51,7 +51,7 @@ class AppSettingService extends Cubit<AppSettingState> {
     ThemeMode themeMode =
         ThemeMode.values[LocalStorageService.instance.getValue(
           LocalStorageService.kThemeMode,
-          0,
+          1,
         )];
     Locale locale =
         AppConstant.mapLocale[LocalStorageService.instance.getValue(
