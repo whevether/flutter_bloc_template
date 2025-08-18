@@ -50,10 +50,10 @@ android {
     }
     signingConfigs {
         create("release") {
-            keyAlias = localProperties["keyAlias"] as String
-            keyPassword = localProperties["keyPassword"] as String
-            storeFile = localProperties["storeFile"]?.let { file(it as String) }
-            storePassword = localProperties["storePassword"] as String
+            keyAlias = localProperties["keyAlias"] as String?
+            keyPassword = localProperties["keyPassword"] as String?
+            storeFile = localProperties["storeFile"]?.let { file(it as String?) }
+            storePassword = localProperties["storePassword"] as String?
             // isMinifyEnabled = true
             // isShrinkResources = false
             // enableProguard = true
