@@ -61,7 +61,7 @@ class HttpClient {
             result.data[AppConstant.messageKey].toString(),
             code:
                 int.tryParse(result.data[AppConstant.statusKey].toString()) ??
-                0,
+                -1,
           );
         }
       }
@@ -179,7 +179,7 @@ class HttpClient {
             result.data[AppConstant.messageKey].toString(),
             code:
                 int.tryParse(result.data[AppConstant.statusKey].toString()) ??
-                0,
+                -1,
           );
         }
       }

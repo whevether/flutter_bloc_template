@@ -3,7 +3,7 @@ class AppError implements Exception {
   final String message;
   AppError(
     this.message, {
-    this.code = 0,
+    this.code = -1,
   });
 
   @override
