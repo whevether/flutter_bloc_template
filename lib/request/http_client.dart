@@ -70,15 +70,16 @@ class HttpClient {
       if (e.type == DioExceptionType.cancel) {
         rethrow;
       }
+      String msg = e.response?.data[AppConstant.messageKey] ?? e.message;
       if (e.type == DioExceptionType.badResponse) {
-        if (e.response?.statusCode != AppConstant.notAuthCode ||
+        if (e.response?.statusCode != AppConstant.notAuthCode &&
             e.response?.statusCode != AppConstant.noPermissionCode) {
-          await SmartDialog.showToast("请求失败：${e.response?.statusCode ?? -1}");
+          await SmartDialog.showToast(msg);
         }
-        return throw AppError("请求失败：${e.response?.statusCode ?? -1}");
+        return throw AppError(msg,code: -1);
       }
-      await SmartDialog.showToast("请求失败,请检查网络");
-      return throw AppError("请求失败,请检查网络");
+      await SmartDialog.showToast(msg);
+      return throw AppError(msg,code: -1);
     }
   }
 
@@ -184,15 +185,19 @@ class HttpClient {
       }
       return result.data;
     } on DioException catch (e) {
-      if (e.type == DioExceptionType.badResponse) {
-        if (e.response?.statusCode != AppConstant.notAuthCode ||
-            e.response?.statusCode != AppConstant.noPermissionCode) {
-          await SmartDialog.showToast("请求失败：${e.response?.statusCode ?? -1}");
-        }
-        return throw AppError("请求失败:状态码：${e.response?.statusCode ?? -1}");
+      if (e.type == DioExceptionType.cancel) {
+        rethrow;
       }
-      await SmartDialog.showToast("请求失败,请检查网络");
-      return throw AppError("请求失败,请检查网络");
+      String msg = e.response?.data[AppConstant.messageKey] ?? e.message;
+      if (e.type == DioExceptionType.badResponse) {
+        if (e.response?.statusCode != AppConstant.notAuthCode &&
+            e.response?.statusCode != AppConstant.noPermissionCode) {
+          await SmartDialog.showToast(msg);
+        }
+        return throw AppError(msg,code: -1);
+      }
+      await SmartDialog.showToast(msg);
+      return throw AppError(msg,code: -1);
     }
   }
 }
