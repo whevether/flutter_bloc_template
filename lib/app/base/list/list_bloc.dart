@@ -31,7 +31,7 @@ class ListBloc<T> extends BaseBloc<ListEvent<T>, ListState<T>> {
     this.method = 'GET',
     this.startPageNum = 1,
   }) : super(InitialState(<T>[])) {
-    this.pageNum = startPageNum;
+    pageNum = startPageNum;
   }
 
   void init() {
