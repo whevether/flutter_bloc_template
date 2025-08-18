@@ -1,18 +1,11 @@
-// import 'dart:io';
-
-// import 'package:extended_image/extended_image.dart';
 import 'package:flutter_bloc_template/app/log.dart';
 import 'package:flutter_bloc_template/app/utils.dart';
 import 'package:flutter_bloc_template/request/common_request.dart';
 import 'package:flutter_bloc_template/services/local_storage_service.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:flutter_bloc_template/app/app_color.dart';
-// import 'package:flutter_bloc_template/app/app_constant.dart';
 import 'package:flutter_bloc_template/app/app_style.dart';
 import 'package:flutter/material.dart';
-// import 'package:flutter_bloc_template/app/log.dart';
-// import 'package:flutter_bloc_template/app/utils.dart';
-// import 'package:wchat/requests/common_request.dart';
 
 class DialogUtils {
   /// 提示弹窗
@@ -80,22 +73,24 @@ class DialogUtils {
       return RadioListTile<T>(
         title: Text(e.toString()),
         value: e,
-        groupValue: value,
-        onChanged: (e) {
-          SmartDialog.dismiss(result: e);
-        },
       );
     }).toList();
     var result = await showBottomSheetCommon<T>(
       [
-        Column(
-          children: [
-            const SizedBox(height: 20),
-            buildBottomSheetHeader(title: title, showClose: true),
-            const SizedBox(height: 20),
-            ...list,
-          ],
-        ),
+         RadioGroup(
+          onChanged: (e) {
+            SmartDialog.dismiss(result: e);
+          },
+          groupValue: value,
+          child: Column(
+            children: [
+              const SizedBox(height: 20),
+              buildBottomSheetHeader(title: title, showClose: true),
+              const SizedBox(height: 20),
+              ...list,
+            ],
+          ),
+        )
       ],
       'radio_group',
       alignment: Alignment.center,
