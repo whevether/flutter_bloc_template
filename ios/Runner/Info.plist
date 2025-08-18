@@ -45,5 +45,37 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>CFBundleLocalizations</key>
+	<array>
+		<string>en_US</string>
+		<string>zh_CN</string>
+	</array>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
+	<key>NSCameraUsageDescription</key>
+	<string>This app needs camera access to photo</string>
+	<key>NSLocalNetworkUsageDescription</key>
+	<string>Use Not Network</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Take a video for display</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>This app needs add medias</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>This app needs save photos</string>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>fetch</string>
+		<string>location</string>
+		<string>remote-notification</string>
+		<string>processing</string>
+	</array>
+	<!-- Permission options for the `bluetooth` -->
+  <key>NSBluetoothAlwaysUsageDescription</key>
+  <string>Bluetooth headset</string>
+  <key>NSBluetoothPeripheralUsageDescription</key>
+  <string>Bluetooth headset</string>
 </dict>
 </plist>
