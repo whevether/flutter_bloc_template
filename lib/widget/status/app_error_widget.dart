@@ -20,13 +20,13 @@ class AppErrorWidget extends BaseStatelessWidget {
           onRefresh?.call();
         },
         child: Padding(
-          padding: AppStyle.edgeInsetsA12,
+          padding: super.all(12),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               LottieBuilder.asset(
                 'assets/lotties/error.json',
-                width: 260,
+                width: super.setWidth(260),
                 repeat: false,
               ),
               Visibility(
@@ -40,7 +40,7 @@ class AppErrorWidget extends BaseStatelessWidget {
               Visibility(
                 visible: error != null,
                 child: Padding(
-                  padding: AppStyle.edgeInsetsT12,
+                  padding: super.only(top: 12),
                   child: OutlinedButton(
                     style: OutlinedButton.styleFrom(
                       textStyle: const TextStyle(fontSize: 14),
