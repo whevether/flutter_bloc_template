@@ -5,6 +5,7 @@ import 'package:flutter_bloc_template/services/local_storage_service.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:flutter_bloc_template/app/app_color.dart';
 import 'package:flutter_bloc_template/app/app_style.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
 
 class DialogUtils {
@@ -16,44 +17,37 @@ class DialogUtils {
   static Future<bool> showAlertDialog(
     String content, {
     String title = '',
-    String confirm = '',
-    String cancel = '',
+    String? confirm,
+    String? cancel,
     bool selectable = false,
     bool barrierDismissible = true,
     List<Widget>? actions,
   }) async {
-    List<Widget> defaultAction = [
-      TextButton(
-        onPressed: (() => SmartDialog.dismiss(result: false)),
-        child: Text(cancel.isEmpty ? "取消" : cancel),
-      ),
-      TextButton(
-        onPressed: (() => SmartDialog.dismiss(result: true)),
-        child: Text(confirm.isEmpty ? "确定" : confirm),
-      ),
-    ];
     var result = await showBottomSheetCommon<bool>(
       [
         Column(
           children: [
-            const SizedBox(height: 20),
+            SizedBox(height: 20.h),
             buildBottomSheetHeader(title: title, showClose: true),
-            const SizedBox(height: 20),
+            SizedBox(height: 20.h),
             SingleChildScrollView(
-              child: Padding(
-                padding: AppStyle.edgeInsetsV12,
-                child: selectable ? SelectableText(content) : Text(content),
-              ),
+              child: selectable
+                  ? SelectableText(content, style: TextStyle(fontSize: 16.sp))
+                  : Text(
+                      content,
+                      style: TextStyle(fontSize: 16.sp),
+                    ),
             ),
-            ...defaultAction,
+            const Spacer(),
+            buildActionWidget(cancelText: cancel ?? '取消',submitText: confirm??'确定' ),
           ],
         ),
       ],
       'alert_dialog',
       alignment: Alignment.center,
-      borderRadius: const BorderRadius.all(Radius.circular(40)),
-      margin: const EdgeInsets.symmetric(horizontal: 20),
-      height: 200,
+      borderRadius: BorderRadius.circular(16.r),
+      margin: EdgeInsets.symmetric(horizontal: 20.w),
+      height: 160.h,
       clickMaskDismiss: false,
     );
     return result ?? false;
@@ -64,7 +58,7 @@ class DialogUtils {
     List<T> contents,
     T value, {
     String title = '',
-    double height = 200,
+    double? height,
   }) async {
     var list = contents.map((e) {
       if (e.toString().isEmpty) {
@@ -77,16 +71,16 @@ class DialogUtils {
     }).toList();
     var result = await showBottomSheetCommon<T>(
       [
-         RadioGroup(
+        RadioGroup(
           onChanged: (e) {
             SmartDialog.dismiss(result: e);
           },
           groupValue: value,
           child: Column(
             children: [
-              const SizedBox(height: 20),
+              SizedBox(height: 20.h),
               buildBottomSheetHeader(title: title, showClose: true),
-              const SizedBox(height: 20),
+              SizedBox(height: 20.h),
               ...list,
             ],
           ),
@@ -94,8 +88,8 @@ class DialogUtils {
       ],
       'radio_group',
       alignment: Alignment.center,
-      borderRadius: const BorderRadius.all(Radius.circular(40)),
-      margin: const EdgeInsets.symmetric(horizontal: 20),
+      borderRadius: BorderRadius.circular(40.r),
+      margin: EdgeInsets.symmetric(horizontal: 20.w),
       height: height,
       clickMaskDismiss: false,
     );
@@ -139,9 +133,10 @@ class DialogUtils {
                       onManage();
                     }
                   },
-                  child: const Text(
+                  child: Text(
                     '管理',
-                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
+                    style:
+                        TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w400),
                   ),
                 ),
               )
@@ -155,7 +150,7 @@ class DialogUtils {
                     Text(
                       title,
                       style: TextStyle(
-                        fontSize: 18,
+                        fontSize: 18.sp,
                         fontWeight: FontWeight.w600,
                         color: closeColor,
                       ),
@@ -175,13 +170,11 @@ class DialogUtils {
     void Function()? onCancel,
     void Function()? onSubmit,
   }) {
-    onCancel =
-        onCancel ??
+    onCancel = onCancel ??
         () {
-          SmartDialog.dismiss();
+          SmartDialog.dismiss(result: false);
         };
-    onSubmit =
-        onSubmit ??
+    onSubmit = onSubmit ??
         () {
           SmartDialog.dismiss(result: true);
         };
@@ -196,32 +189,32 @@ class DialogUtils {
               onPressed: onCancel,
               style: ElevatedButton.styleFrom(
                 elevation: 0,
-                padding: const EdgeInsets.symmetric(
-                  vertical: 8,
-                  horizontal: 16,
+                padding: EdgeInsets.symmetric(
+                  vertical: 8.w,
+                  horizontal: 16.w,
                 ),
                 backgroundColor: AppColor.backgroundColor,
                 foregroundColor: AppColor.black333,
                 shape: RoundedRectangleBorder(
-                  side: const BorderSide(
-                    width: 1,
+                  side: BorderSide(
+                    width: 1.w,
                     color: AppColor.borderTopColor,
                   ),
-                  borderRadius: AppStyle.radius48,
+                  borderRadius: BorderRadius.circular(48.r),
                 ),
               ),
               child: Text(
                 cancelText,
                 textAlign: TextAlign.center,
-                style: const TextStyle(
+                style: TextStyle(
                   color: AppColor.black333,
-                  fontSize: 16,
+                  fontSize: 16.sp,
                   fontWeight: FontWeight.w600,
                 ),
               ),
             ),
           ),
-        if (cancelText != null) const SizedBox(width: 20),
+        if (cancelText != null) SizedBox(width: 20.w),
         if (submitText != null)
           Expanded(
             flex: 1,
@@ -229,20 +222,21 @@ class DialogUtils {
               onPressed: onSubmit,
               style: ElevatedButton.styleFrom(
                 elevation: 0,
-                padding: const EdgeInsets.symmetric(
-                  vertical: 8,
-                  horizontal: 16,
+                padding: EdgeInsets.symmetric(
+                  vertical: 8.w,
+                  horizontal: 16.w,
                 ),
-                backgroundColor: AppColor.pinkBg,
+                backgroundColor: AppColor.color0089FF,
                 foregroundColor: AppColor.backgroundColor,
-                shape: RoundedRectangleBorder(borderRadius: AppStyle.radius48),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(48.r)),
               ),
               child: Text(
                 submitText,
                 textAlign: TextAlign.center,
-                style: const TextStyle(
+                style: TextStyle(
                   color: AppColor.backgroundColor,
-                  fontSize: 16,
+                  fontSize: 16.sp,
                   fontWeight: FontWeight.w600,
                 ),
               ),
@@ -264,6 +258,7 @@ class DialogUtils {
     bool? clickMaskDismiss = true,
     Alignment alignment = Alignment.bottomCenter,
     EdgeInsetsGeometry? margin,
+    EdgeInsetsGeometry? padding,
     Duration? displayTime,
     BorderRadiusGeometry borderRadius = const BorderRadius.only(
       topLeft: Radius.circular(40),
@@ -278,13 +273,14 @@ class DialogUtils {
       builder: (_) {
         return Container(
           // width: double.infinity,
-          height: height ?? 358,
+          height: height ?? 358.h,
           constraints: BoxConstraints(
-            maxHeight: maxHeight ?? 500,
+            maxHeight: maxHeight ?? 500.w,
             maxWidth: maxWidth ?? double.infinity,
           ),
           margin: margin,
-          padding: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
+          padding:
+              padding ?? EdgeInsets.only(left: 16.w, right: 16.w, bottom: 16.w),
           decoration: ShapeDecoration(
             color: backgroundColor ?? AppColor.backgroundColor,
             shape: RoundedRectangleBorder(borderRadius: borderRadius),
@@ -296,20 +292,20 @@ class DialogUtils {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Container(
-                          height: 6,
-                          width: 37.5,
-                          margin: const EdgeInsets.only(top: 10),
+                          height: 6.h,
+                          width: 37.5.w,
+                          margin: EdgeInsets.only(top: 10.w),
                           decoration: ShapeDecoration(
                             color: AppColor.borderTopColor,
                             shape: RoundedRectangleBorder(
-                              borderRadius: AppStyle.radius16,
+                              borderRadius: BorderRadius.circular(16.r),
                             ),
                           ),
                         ),
                       ],
                     )
                   : const SizedBox.shrink(),
-              const Padding(padding: EdgeInsets.only(top: 20)),
+              Padding(padding: EdgeInsets.only(top: 20.w)),
               ...widget,
             ],
           ),
@@ -340,33 +336,33 @@ class DialogUtils {
           [
             Column(
               children: [
-                const SizedBox(height: 36),
+                SizedBox(height: 36.h),
                 buildBottomSheetHeader(
                   showClose: false,
                   closeColor: AppColor.backgroundColorDark,
                   title: "发现新版本 v${versionInfo.versionNo}",
                 ),
-                const SizedBox(height: 10),
+                 SizedBox(height: 10.h),
                 SizedBox(
                   width: double.infinity,
-                  height: 200,
+                  height: 200.h,
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
                         Icon(Icons.system_update),
-                        const SizedBox(height: 10),
+                         SizedBox(height: 10.h),
                         Text(
                           versionInfo.versionName,
                           style: TextStyle(
-                            fontSize: 16,
+                            fontSize: 16.sp,
                             color: AppColor.backgroundColorDark,
                           ),
                         ),
-                        const SizedBox(height: 10),
+                         SizedBox(height: 10.h),
                         Text(
                           versionInfo.content,
                           style: TextStyle(
-                            fontSize: 16,
+                            fontSize: 16.sp,
                             color: AppColor.backgroundColorDark,
                           ),
                         ),
