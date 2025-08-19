@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 
 import 'package:flutter/material.dart';
 // 本地缓存或文件路径图片
-class LocalImage extends StatelessWidget {
+class LocalImage extends BaseStatelessWidget {
   final String path;
   final double? width;
   final double? height;
@@ -25,10 +25,10 @@ class LocalImage extends StatelessWidget {
         decoration: BoxDecoration(
           color: Colors.grey.withValues(alpha: .1),
         ),
-        child: const Icon(
+        child: Icon(
           Icons.image,
           color: Colors.grey,
-          size: 24,
+          size: super.setFontSize(24),
         ),
       );
     }
@@ -42,10 +42,10 @@ class LocalImage extends StatelessWidget {
               decoration: BoxDecoration(
                 color: Colors.grey.withValues(alpha: .1),
               ),
-              child: const Icon(
+              child:  Icon(
                 Icons.broken_image,
                 color: Colors.grey,
-                size: 24,
+                size: super.setFontSize(24),
               ),
             );
           }
@@ -58,8 +58,8 @@ class LocalImage extends StatelessWidget {
           return Image.memory(
             snap.data as Uint8List,
             fit: fit,
-            height: height,
-            width: width,
+            height: height != null ? super.setHeight(height!) : null,
+            width: width != null ? super.setWidth(width!) : width,
           );
         },
       ),
