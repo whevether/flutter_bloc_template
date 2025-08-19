@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:flutter/services.dart';
-
+import 'package:aivox/app/base/base_stateless_widget.dart';
 import 'package:flutter/material.dart';
 // 本地缓存或文件路径图片
 class LocalImage extends BaseStatelessWidget {
