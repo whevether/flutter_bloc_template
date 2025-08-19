@@ -36,7 +36,7 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8 #苹果图标
-  go_router: ^16.1.0 #路由
+  go_router: ^16.2.0 #路由
   dio: ^5.9.0 #网络请求
   permission_handler: ^12.0.1 #权限处理
   hive_ce: ^2.11.3 #本地存储

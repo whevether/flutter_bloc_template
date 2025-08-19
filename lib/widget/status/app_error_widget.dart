@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc_template/app/app_style.dart';
 import 'package:flutter_bloc_template/app/base/base_stateless_widget.dart';
 import 'package:flutter_bloc_template/app/utils.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';

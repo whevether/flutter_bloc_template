@@ -1,9 +1,8 @@
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc_template/app/app_constant.dart';
-import 'package:flutter_bloc_template/app/app_style.dart';
-import 'package:aivox/app/base/base_state.dart';
-import 'package:aivox/app/base/base_stateful_widget.dart';
+import 'package:flutter_bloc_template/app/base/base_state.dart';
+import 'package:flutter_bloc_template/app/base/base_stateful_widget.dart';
 
 class NetImage extends BaseStatefulWidget {
   final String picUrl;

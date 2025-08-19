@@ -4,7 +4,6 @@ import 'package:flutter_bloc_template/request/common_request.dart';
 import 'package:flutter_bloc_template/services/local_storage_service.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:flutter_bloc_template/app/app_color.dart';
-import 'package:flutter_bloc_template/app/app_style.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
 
