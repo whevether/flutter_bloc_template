@@ -15,20 +15,20 @@ class AppEmptyWidget extends BaseStatelessWidget {
           onRefresh?.call();
         },
         child: Padding(
-          padding: AppStyle.edgeInsetsA12,
+          padding: super.all(12),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               LottieBuilder.asset(
                 'assets/lotties/empty.json',
-                width: 200,
-                height: 200,
+                width: super.setWidth(200),
+                height: super.setHeight(200),
                 repeat: false,
               ),
-              const Text(
+               Text(
                 "这里什么都没有",
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 16, color: Colors.grey),
+                style: TextStyle(fontSize: super.setFontSize(16), color: Colors.grey),
               ),
             ],
           ),
