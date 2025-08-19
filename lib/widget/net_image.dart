@@ -2,8 +2,10 @@ import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc_template/app/app_constant.dart';
 import 'package:flutter_bloc_template/app/app_style.dart';
+import 'package:aivox/app/base/base_state.dart';
+import 'package:aivox/app/base/base_stateful_widget.dart';
 
-class NetImage extends StatefulWidget {
+class NetImage extends BaseStatefulWidget {
   final String picUrl;
   final double? width;
   final double? height;
@@ -22,7 +24,7 @@ class NetImage extends StatefulWidget {
   State<NetImage> createState() => _NetImageState();
 }
 
-class _NetImageState extends State<NetImage>
+class _NetImageState extends BaseState<NetImage>
     with SingleTickerProviderStateMixin {
   late AnimationController animationController;
 
@@ -78,7 +80,7 @@ class _NetImageState extends State<NetImage>
                     CircularProgressIndicator(
                       value: progress,
                     ),
-                    AppStyle.vGap4,
+                    super.sizedBox(height: 4),
                     Text(
                       '${((progress ?? 0.0) * 100).toInt()}%',
                       textAlign: TextAlign.center,
