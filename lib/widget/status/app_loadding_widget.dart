@@ -19,18 +19,18 @@ class AppLoaddingWidget extends BaseStatelessWidget {
     }
     return Center(
       child: Padding(
-        padding: AppStyle.edgeInsetsA12,
+        padding: super.all(12),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             LottieBuilder.asset(
               'assets/lotties/$loadName.json',
-              width: 200,
+              width: super.setWidth(200),
             ),
             Text(
               newMsg,
               textAlign: TextAlign.center,
-              style: const TextStyle(fontSize: 16),
+              style:  TextStyle(fontSize: super.setFontSize(16)),
             ),
           ],
         ),
