@@ -30,12 +30,16 @@ abstract class BaseLoadBloc<E extends BaseEvent, S> extends ReplayBloc<E, S> {
       if (resultState != null) {
         emit.call(resultState);
       }
-      onStateChange(resultState);
+      // onStateChange(resultState);
     },transformer: sequential());
   }
 
   ///状态变更
-  void onStateChange(S? state) {}
+  void onStateChange(S? state) {
+    if(state != null){
+      emit.call(state);
+    }
+  }
 }
 
 abstract class BaseBloc<E extends BaseEvent, S> extends BaseLoadBloc<E, S> {

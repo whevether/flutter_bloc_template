@@ -4,6 +4,7 @@ import 'package:flutter_bloc_template/app/app_color.dart';
 import 'package:flutter_bloc_template/app/base/base_state.dart';
 import 'package:flutter_bloc_template/app/base/base_stateful_widget.dart';
 import 'package:flutter_bloc_template/app/base/data/data_change_bloc.dart';
+import 'package:flutter_bloc_template/app/event_bus.dart';
 import 'package:flutter_bloc_template/modules/index/chat_pages.dart';
 import 'package:flutter_bloc_template/modules/index/find_pages.dart';
 import 'package:flutter_bloc_template/modules/index/home_pages.dart';
@@ -78,6 +79,9 @@ class _IndexPagesState extends BaseState<IndexPages> {
                   waterDropColor: theme.primaryColor,
                   inactiveIconColor: theme.primaryColor,
                   onItemSelected: (int index) {
+                    if(index == state){
+                      EventBus.instance.emit(EventBus.kBottomNavigationBarClicked, index);
+                    }
                     _selectIndex.changeData(index);
                   },
                   selectedIndex: state,
