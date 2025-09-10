@@ -113,9 +113,11 @@ class DialogUtils {
                 child: InkWell(
                   child: Icon(Icons.close_sharp, color: closeColor),
                   onTap: () {
-                    SmartDialog.dismiss();
+                    
                     if (onClose != null) {
                       onClose();
+                    }else{
+                      SmartDialog.dismiss();
                     }
                   },
                 ),
@@ -127,9 +129,11 @@ class DialogUtils {
                 top: 0,
                 child: InkWell(
                   onTap: () {
-                    SmartDialog.dismiss();
+                    
                     if (onManage != null) {
                       onManage();
+                    }else{
+                      SmartDialog.dismiss();
                     }
                   },
                   child: Text(
