@@ -18,6 +18,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher_string.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class Utils {
   static late PackageInfo packageInfo;
@@ -319,62 +320,64 @@ class Utils {
   }
 
   /// 分享
-  static void share(BuildContext context,String url, {String content = ""}) {
-    showModalBottomSheet(
-      context: context,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(12),
-          topRight: Radius.circular(12),
-        ),
-      ),
-      constraints: const BoxConstraints(
-        maxWidth: 500,
-      ),
-      useSafeArea: true,
-      backgroundColor: AppColor.color2,
-      builder: (context) => Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          ListTile(
-            leading: const Icon(Icons.copy),
-            title: const Text("复制链接"),
-            onTap: () {
-              Navigator.pop(context);
-              copyText(url);
-            },
-          ),
-          Visibility(
-            visible: content.isNotEmpty,
-            child: ListTile(
+  static void share(String url, {String content = ""}) async {
+    await DialogUtils.showBottomSheetCommon<void>(
+      [
+        Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const SizedBox(
+              height: 36,
+            ),
+            DialogUtils.buildBottomSheetHeader(
+                showClose: true,
+                closeColor: AppColor.backgroundColorDark,
+                title: '分享'),
+            SizedBox(
+              height: 10.h,
+            ),
+            ListTile(
               leading: const Icon(Icons.copy),
-              title: const Text("复制标题与链接"),
+              title: const Text("复制链接"),
               onTap: () {
-                Navigator.pop(context);
-                copyText("$content\n$url");
+                SmartDialog.dismiss();
+                copyText(url);
               },
             ),
-          ),
-          ListTile(
-            leading: const Icon(Icons.public),
-            title: const Text("浏览器打开"),
-            onTap: () {
-              Navigator.pop(context);
-              openLaunchUrlString(url);
-            },
-          ),
-          ListTile(
-            leading: const Icon(Icons.share),
-            title: const Text("系统分享"),
-            onTap: () {
-               Navigator.pop(context);
-
-              SharePlus.instance.share(
-                  ShareParams(text: content.isEmpty ? url : "$content\n$url"));
-            },
-          ),
-        ],
-      ),
+            Visibility(
+              visible: content.isNotEmpty,
+              child: ListTile(
+                leading: const Icon(Icons.copy),
+                title: const Text("复制标题与链接"),
+                onTap: () {
+                  SmartDialog.dismiss();
+                  copyText("$content\n$url");
+                },
+              ),
+            ),
+            ListTile(
+              leading: const Icon(Icons.public),
+              title: const Text("浏览器打开"),
+              onTap: () {
+                SmartDialog.dismiss();
+                openLaunchUrlString(url);
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.share),
+              title: const Text("系统分享"),
+              onTap: () {
+                SmartDialog.dismiss();
+                SharePlus.instance
+                    .share(ShareParams(title: content, text: url));
+              },
+            ),
+          ],
+        )
+      ],
+      'show_share',
+      height: 330.h,
+      showTopBorder: true,
     );
   }
 
