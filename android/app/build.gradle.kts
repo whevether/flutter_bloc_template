@@ -19,14 +19,16 @@ android {
     compileSdk = 36
     ndkVersion = "27.3.13750724"
 
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+    ccompileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 
-   kotlinOptions {
-       jvmTarget = JavaVersion.VERSION_1_8.toString()
-   }
+    kotlin {
+      compilerOptions {
+        jvmTarget = JvmTarget.JVM_17
+      }
+    }
     packaging {
         dex {
             useLegacyPackaging = true
