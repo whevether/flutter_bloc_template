@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bloc_template/app/app_constant.dart';
 import 'package:flutter_bloc_template/app/dialog_utils.dart';
@@ -9,7 +8,6 @@ import 'package:flutter_bloc_template/app/log.dart';
 import 'package:flutter_bloc_template/services/local_storage_service.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:local_auth/local_auth.dart';
-import 'package:local_auth/error_codes.dart' as auth_error;
 
 // App设置状态
 class AppSettingState {
@@ -105,13 +103,17 @@ class AppSettingService extends Cubit<AppSettingState> {
         localizedReason: '请验证以支付',
       );
       return didAuthenticate;
-    } on PlatformException catch (e) {
-      if (e.code == auth_error.notAvailable) {
-        Log.d('未启用生物验证,请前往设置开启,${e.code}');
+    } on LocalAuthException catch (e) {
+      if (e.code == LocalAuthExceptionCode.noCredentialsSet) {
+        Log.d('设备未配置凭据。,${e.code}');
         return false;
         // Add handling of no hardware here.
-      } else if (e.code == auth_error.notEnrolled) {
-        Log.d('未注册生物验证,${e.code}');
+      } else if (e.code == LocalAuthExceptionCode.noBiometricsEnrolled) {
+        Log.d('该设备能够进行生物识别身份验证，但没有生物识别功能,${e.code}');
+        return false;
+        // ...
+      } else if (e.code == LocalAuthExceptionCode.noBiometricHardware) {
+        Log.d('该设备没有生物识别硬件。,${e.code}');
         return false;
         // ...
       } else {
@@ -127,16 +129,19 @@ class AppSettingService extends Cubit<AppSettingState> {
     try {
       final bool didAuthenticate = await state.auth.authenticate(
         localizedReason: '请验证以支付',
-        options: const AuthenticationOptions(biometricOnly: true),
       );
       return didAuthenticate;
-    } on PlatformException catch (e) {
-      if (e.code == auth_error.notAvailable) {
-        Log.d('未启用生物验证,请前往设置开启,${e.code}');
+    }  on LocalAuthException catch (e) {
+      if (e.code == LocalAuthExceptionCode.noCredentialsSet) {
+        Log.d('设备未配置凭据。,${e.code}');
         return false;
         // Add handling of no hardware here.
-      } else if (e.code == auth_error.notEnrolled) {
-        Log.d('未注册生物验证,${e.code}');
+      } else if (e.code == LocalAuthExceptionCode.noBiometricsEnrolled) {
+        Log.d('该设备能够进行生物识别身份验证，但没有生物识别功能,${e.code}');
+        return false;
+        // ...
+      } else if (e.code == LocalAuthExceptionCode.noBiometricHardware) {
+        Log.d('该设备没有生物识别硬件。,${e.code}');
         return false;
         // ...
       } else {
@@ -152,17 +157,20 @@ class AppSettingService extends Cubit<AppSettingState> {
     try {
       final bool didAuthenticate = await state.auth.authenticate(
         localizedReason: '请验证以支付',
-        options: const AuthenticationOptions(useErrorDialogs: false),
       );
       return didAuthenticate;
       // #docregion NoErrorDialogs
-    } on PlatformException catch (e) {
-      if (e.code == auth_error.notAvailable) {
-        Log.d('未启用生物验证,请前往设置开启,${e.code}');
+    } on LocalAuthException catch (e) {
+      if (e.code == LocalAuthExceptionCode.noCredentialsSet) {
+        Log.d('设备未配置凭据。,${e.code}');
         return false;
         // Add handling of no hardware here.
-      } else if (e.code == auth_error.notEnrolled) {
-        Log.d('未注册生物验证,${e.code}');
+      } else if (e.code == LocalAuthExceptionCode.noBiometricsEnrolled) {
+        Log.d('该设备能够进行生物识别身份验证，但没有生物识别功能,${e.code}');
+        return false;
+        // ...
+      } else if (e.code == LocalAuthExceptionCode.noBiometricHardware) {
+        Log.d('该设备没有生物识别硬件。,${e.code}');
         return false;
         // ...
       } else {
@@ -178,16 +186,19 @@ class AppSettingService extends Cubit<AppSettingState> {
     try {
       final bool didAuthenticate = await state.auth.authenticate(
         localizedReason: '请验证以支付',
-        options: const AuthenticationOptions(useErrorDialogs: false),
       );
       return didAuthenticate;
-    } on PlatformException catch (e) {
-      if (e.code == auth_error.notEnrolled) {
-        Log.d('未注册生物验证,${e.code}');
+    }  on LocalAuthException catch (e) {
+      if (e.code == LocalAuthExceptionCode.noCredentialsSet) {
+        Log.d('设备未配置凭据。,${e.code}');
         return false;
-      } else if (e.code == auth_error.lockedOut ||
-          e.code == auth_error.permanentlyLockedOut) {
-        Log.d('已锁定,永久锁定,${e.code}');
+        // Add handling of no hardware here.
+      } else if (e.code == LocalAuthExceptionCode.noBiometricsEnrolled) {
+        Log.d('该设备能够进行生物识别身份验证，但没有生物识别功能,${e.code}');
+        return false;
+        // ...
+      } else if (e.code == LocalAuthExceptionCode.noBiometricHardware) {
+        Log.d('该设备没有生物识别硬件。,${e.code}');
         return false;
         // ...
       } else {
