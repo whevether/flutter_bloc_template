@@ -17,7 +17,7 @@ if (keystorePropertiesFile.exists()) {
 android {
     namespace = "com.example.flutter_bloc_template"
     compileSdk = 36
-    ndkVersion = "27.3.13750724"
+    ndkVersion = "29.0.14206865"
 
     ccompileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
