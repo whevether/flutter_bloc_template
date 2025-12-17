@@ -9,7 +9,7 @@ import 'package:flutter_bloc_template/widget/status/app_empty_widget.dart';
 
 typedef RefreshChild<T> = Widget Function(BuildContext context, List<T> list);
 
-class CommonRefreshWidget<T> extends StatefulWidget {
+class CommonRefreshWidget<T> extends BaseStatefulWidget {
   final ListBloc<T> bloc;
   final RefreshChild<T> child;
   final Widget? emptyWidget;
@@ -28,7 +28,7 @@ class CommonRefreshWidget<T> extends StatefulWidget {
   });
 
   @override
-  State<StatefulWidget> createState() => _CommonRefreshWidgetState<T>();
+  State<CommonRefreshWidget> createState() => _CommonRefreshWidgetState<T>();
 }
 
 class _CommonRefreshWidgetState<T> extends BaseState<CommonRefreshWidget<T>>
