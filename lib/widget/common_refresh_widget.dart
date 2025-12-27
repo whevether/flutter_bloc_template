@@ -2,6 +2,7 @@ import 'package:easy_refresh/easy_refresh.dart';
 import 'package:flutter/material.dart' hide ErrorWidgetBuilder;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bloc_template/app/base/base_state.dart';
+import 'package:flutter_bloc_template/app/base/base_stateful_widget.dart';
 import 'package:flutter_bloc_template/app/base/list/list_bloc.dart';
 import 'package:flutter_bloc_template/app/base/list/list_state.dart';
 import 'package:flutter_bloc_template/widget/bloc_load_widget.dart';
