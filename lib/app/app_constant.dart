@@ -10,7 +10,7 @@ class AppConstant {
    //头像缓存路径
   static const String avatarCache = 'avatarCache';
   //api地址
-  static String serverUrl = 'http://192.168.1.8:5900';
+  static String serverUrl = 'https://api.infodream6789.xyz';
   //成功状态码
   static const int successCode = 200;
   //默认状态码
@@ -26,7 +26,7 @@ class AppConstant {
   //结果key
   static const String resultKey = 'result';
   //总分页
-  static const String totalPageKey = 'totalPage';
+  static const String totalCountKey = 'totalCount';
    //支持多语言
   static Map<int, Locale?> mapLocale = {
     0: Locale("en", "US"),

@@ -19,7 +19,7 @@ class ListBloc<T> extends BaseBloc<ListEvent<T>, ListState<T>> {
   ///分页一页数量
   final int pageSize;
   ///EasyRefresh控制器
-  final EasyRefreshController controller = EasyRefreshController();
+  final EasyRefreshController controller = EasyRefreshController(controlFinishLoad: true,controlFinishRefresh: true);
   //滚动控制器
   final ScrollController scrollController = ScrollController();
 
