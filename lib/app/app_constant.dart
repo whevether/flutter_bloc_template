@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_riverpod_template/app/env.dart';
+import 'package:flutter_bloc_template/app/env.dart';
 
 class AppConstant {
   //视频缓存路径
