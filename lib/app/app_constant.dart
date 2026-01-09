@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_bloc_template/app/env.dart';
 
 class AppConstant {
   //视频缓存路径
@@ -10,9 +11,9 @@ class AppConstant {
    //头像缓存路径
   static const String avatarCache = 'avatarCache';
   //api地址
-  static String serverUrl = 'https://api.infodream6789.xyz';
+  static String serverUrl = '${Env.apiBaseUrl}:${Env.httpPort}';
   //成功状态码
-  static const int successCode = 200;
+  static const int successCode = 1;
   //默认状态码
   static const int defaultCode = 0;
   //无权限状态码
@@ -20,13 +21,15 @@ class AppConstant {
   //未授权状态码
   static const int notAuthCode = 401;
   //状态码key
-  static const String statusKey = 'status';
+  static const String statusKey = 'code';
   //消息key
-  static const String messageKey = 'message';
+  static const String messageKey = 'msg';
   //结果key
-  static const String resultKey = 'result';
+  static const String resultKey = 'data';
   //总分页
   static const String totalCountKey = 'totalCount';
+  ///
+  static String get tenantID => '18';
    //支持多语言
   static Map<int, Locale?> mapLocale = {
     0: Locale("en", "US"),
