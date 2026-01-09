@@ -1,0 +1,44 @@
+{
+    // 使用 IntelliSense 了解相关属性。 
+    // 悬停以查看现有属性的描述。
+    // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Dev",
+            "request": "launch",
+            "type": "dart",
+            "args": [
+                "--dart-define=ENV=dev",
+                "--dart-define=API_BASE_URL=http://192.168.2.133",
+                "--dart-define=HTTP_PORT=7001",
+                "--dart-define=SOCKET_PORT=8002",
+                "--dart-define=ENABLE_LOG=true"
+            ]
+        },
+        {
+            "name": "Test",
+            "request": "launch",
+            "type": "dart",
+            "args": [
+                "--dart-define=ENV=dev",
+                "--dart-define=API_BASE_URL=http://192.168.2.215",
+                "--dart-define=HTTP_PORT=7001",
+                "--dart-define=SOCKET_PORT=8002",
+                "--dart-define=ENABLE_LOG=true"
+            ]
+        },
+        {
+            "name": "Prod",
+            "request": "launch",
+            "type": "dart",
+            "args": [
+                "--dart-define=ENV=prod",
+                "--dart-define=API_BASE_URL=https://m.wtcard.com",
+                "--dart-define=HTTP_PORT=443",
+                "--dart-define=SOCKET_PORT=8002",
+                "--dart-define=ENABLE_LOG=false"
+            ]
+        }
+    ]
+}
