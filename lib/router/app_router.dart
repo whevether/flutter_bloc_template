@@ -9,6 +9,7 @@ import 'package:flutter_bloc_template/router/router_path.dart';
 import 'package:flutter_bloc_template/services/user_service.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:go_router/go_router.dart';
+
 class GoRouterRefreshStream extends ChangeNotifier {
   GoRouterRefreshStream(Stream<dynamic> stream) {
     notifyListeners();
@@ -25,12 +26,13 @@ class GoRouterRefreshStream extends ChangeNotifier {
     super.dispose();
   }
 }
+
 class AppRouter {
   static final instance = AppRouter._();
   AppRouter._();
 
   final GlobalKey<NavigatorState> navigatorKey = GlobalKey();
-  
+
   // 关键：定义一个变量来持有 router
   GoRouter? _router;
 
@@ -38,32 +40,33 @@ class AppRouter {
   GoRouter getRouter(BuildContext context) {
     if (_router == null) {
       final userBloc = context.read<UserBloc>();
-      
+
       _router = GoRouter(
         initialLocation: RoutePath.kSplash,
         navigatorKey: navigatorKey,
         observers: [FlutterSmartDialog.observer],
         // 核心：将 context 中的 userBloc 转换为 Listenable
         refreshListenable: GoRouterRefreshStream(userBloc.stream),
-        
+
         redirect: (context, state) {
-          final loginResult = userBloc.state.loginResult;
-          final bool isLoggedIn = loginResult?.token != null;
-          
+          final user = userBloc.state;
+          final bool isLoggedIn = user.loginResult != null;
           final String location = state.matchedLocation;
-          final bool isLoggingIn = location == RoutePath.kUserLogin;
-          final bool isSplash = location == RoutePath.kSplash;
 
-          if (isSplash) return null;
-
-          // 未登录且不在登录页 -> 强制去登录
-          if (!isLoggedIn && !isLoggingIn) {
-            return RoutePath.kUserLogin;
+          // 逻辑：如果未登录且不在登录页或开屏页 -> 去登录
+          if (!isLoggedIn) {
+            if (location != RoutePath.kUserLogin ||
+                location != RoutePath.kSplash) {
+              return RoutePath.kUserLogin;
+            }
           }
 
-          // 已登录且在登录页 -> 强制去首页
-          if (isLoggedIn && isLoggingIn) {
-            return RoutePath.kIndex;
+          // 逻辑：如果已登录且在登录页或启动页 -> 去首页
+          if (isLoggedIn) {
+            if (location == RoutePath.kUserLogin ||
+                location == RoutePath.kSplash) {
+              return RoutePath.kIndex;
+            }
           }
 
           return null;
@@ -76,24 +79,28 @@ class AppRouter {
 
   // ... 保持 _routes 和 _fadeTransitionPage 不变 ...
   List<RouteBase> get _routes => [
-    GoRoute(
-      name: 'splash',
-      path: RoutePath.kSplash,
-      pageBuilder: (context, state) => _fadeTransitionPage(context: context, child: const SplashScreen()),
-    ),
-    GoRoute(
-      name: 'login',
-      path: RoutePath.kUserLogin,
-      pageBuilder: (context, state) => _fadeTransitionPage(context: context, child: LoginPages()),
-    ),
-    GoRoute(
-      name: 'index',
-      path: RoutePath.kIndex,
-      pageBuilder: (context, state) => _fadeTransitionPage(context: context, child: IndexPages()),
-    ),
-  ];
+        GoRoute(
+          name: 'splash',
+          path: RoutePath.kSplash,
+          pageBuilder: (context, state) => _fadeTransitionPage(
+              context: context, child: const SplashScreen()),
+        ),
+        GoRoute(
+          name: 'login',
+          path: RoutePath.kUserLogin,
+          pageBuilder: (context, state) =>
+              _fadeTransitionPage(context: context, child: LoginPages()),
+        ),
+        GoRoute(
+          name: 'index',
+          path: RoutePath.kIndex,
+          pageBuilder: (context, state) =>
+              _fadeTransitionPage(context: context, child: IndexPages()),
+        ),
+      ];
 
-  Page<void> _fadeTransitionPage({required BuildContext context, required Widget child}) {
+  Page<void> _fadeTransitionPage(
+      {required BuildContext context, required Widget child}) {
     return CustomTransitionPage(
       child: child,
       transitionsBuilder: (context, animation, secondaryAnimation, child) {

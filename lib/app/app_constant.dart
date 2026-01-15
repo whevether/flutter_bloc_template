@@ -13,7 +13,7 @@ class AppConstant {
   //api地址
   static String serverUrl = '${Env.apiBaseUrl}:${Env.httpPort}';
   //成功状态码
-  static const int successCode = 1;
+  static const int successCode = 200;
   //默认状态码
   static const int defaultCode = 0;
   //无权限状态码
@@ -21,11 +21,11 @@ class AppConstant {
   //未授权状态码
   static const int notAuthCode = 401;
   //状态码key
-  static const String statusKey = 'code';
+  static const String statusKey = 'status';
   //消息key
-  static const String messageKey = 'msg';
+  static const String messageKey = 'message';
   //结果key
-  static const String resultKey = 'data';
+  static const String resultKey = 'result';
   //总分页
   static const String totalCountKey = 'totalCount';
   ///
