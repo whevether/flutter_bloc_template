@@ -1,74 +1,106 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
-// import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bloc_template/modules/index/index_pages.dart';
 import 'package:flutter_bloc_template/modules/login/login_pages.dart';
 import 'package:flutter_bloc_template/modules/splash_screen.dart';
 import 'package:flutter_bloc_template/router/router_path.dart';
-// import 'package:flutter_bloc_template/services/user_service.dart';
+import 'package:flutter_bloc_template/services/user_service.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:go_router/go_router.dart';
 
-class AppRouter {
-  late final GoRouter _router;
-  //获取当前router实例
-  GoRouter get router => _router;
-  // router单例
-  static final instance = AppRouter._();
-  final GlobalKey<NavigatorState> navigatorKey = GlobalKey();
-  // 路由列表
-  AppRouter._() {
-    _router = GoRouter(
-      routes: _routes,
-      navigatorKey: navigatorKey,
-      observers: [FlutterSmartDialog.observer],
-      initialLocation: RoutePath.kSplash,
-    );
-  }
-  List<RouteBase> get _routes {
-    return [
-      GoRoute(
-        name: 'splash',
-        path: RoutePath.kSplash,
-        pageBuilder: (context, state) {
-          return _fadeTransitionPage(context: context, child: SplashScreen());
-        },
-      ),
-      GoRoute(
-        name: 'login',
-        path: RoutePath.kUserLogin,
-        pageBuilder: (context, state) {
-          return _fadeTransitionPage(context: context, child: LoginPages());
-        },
-        // redirect: (context, state) {
-        //   var userState = context.read<UserBloc>().state;
-        //   if (userState.loginResult?.token != null) {
-        //     return RoutePath.kIndex;
-        //   }
-        //   return null;
-        // },
-      ),
-      GoRoute(
-        name: 'index',
-        path: RoutePath.kIndex,
-        pageBuilder: (context, state) {
-          return _fadeTransitionPage(context: context, child: IndexPages());
-        },
-        // redirect: (context, state) {
-        //   var userState = context.read<UserBloc>().state;
-        //   if (userState.loginResult?.token == null) {
-        //     return RoutePath.kUserLogin;
-        //   }
-        //   return null;
-        // },
-      ),
-    ];
+class GoRouterRefreshStream extends ChangeNotifier {
+  GoRouterRefreshStream(Stream<dynamic> stream) {
+    notifyListeners();
+    _subscription = stream.asBroadcastStream().listen(
+          (dynamic _) => notifyListeners(),
+        );
   }
 
-  // 页面动画
-  Page<void> _fadeTransitionPage({
-    required BuildContext context,
-    required Widget child,
-  }) {
+  late final StreamSubscription<dynamic> _subscription;
+
+  @override
+  void dispose() {
+    _subscription.cancel();
+    super.dispose();
+  }
+}
+
+class AppRouter {
+  static final instance = AppRouter._();
+  AppRouter._();
+
+  final GlobalKey<NavigatorState> navigatorKey = GlobalKey();
+
+  // 关键：定义一个变量来持有 router
+  GoRouter? _router;
+
+  // 提供一个获取方法，如果未初始化则报错或通过 context 初始化
+  GoRouter getRouter(BuildContext context) {
+    if (_router == null) {
+      final userBloc = context.read<UserBloc>();
+
+      _router = GoRouter(
+        initialLocation: RoutePath.kSplash,
+        navigatorKey: navigatorKey,
+        observers: [FlutterSmartDialog.observer],
+        // 核心：将 context 中的 userBloc 转换为 Listenable
+        refreshListenable: GoRouterRefreshStream(userBloc.stream),
+
+        redirect: (context, state) {
+          final user = userBloc.state;
+          final bool isLoggedIn = user.loginResult != null;
+          final String location = state.matchedLocation;
+
+          // 逻辑：如果未登录且不在登录页或开屏页 -> 去登录
+          if (!isLoggedIn) {
+            if (location != RoutePath.kUserLogin ||
+                location != RoutePath.kSplash) {
+              return RoutePath.kUserLogin;
+            }
+          }
+
+          // 逻辑：如果已登录且在登录页或启动页 -> 去首页
+          if (isLoggedIn) {
+            if (location == RoutePath.kUserLogin ||
+                location == RoutePath.kSplash) {
+              return RoutePath.kIndex;
+            }
+          }
+
+          return null;
+        },
+        routes: _routes,
+      );
+    }
+    return _router!;
+  }
+
+  // ... 保持 _routes 和 _fadeTransitionPage 不变 ...
+  List<RouteBase> get _routes => [
+        GoRoute(
+          name: 'splash',
+          path: RoutePath.kSplash,
+          pageBuilder: (context, state) => _fadeTransitionPage(
+              context: context, child: const SplashScreen()),
+        ),
+        GoRoute(
+          name: 'login',
+          path: RoutePath.kUserLogin,
+          pageBuilder: (context, state) =>
+              _fadeTransitionPage(context: context, child: LoginPages()),
+        ),
+        GoRoute(
+          name: 'index',
+          path: RoutePath.kIndex,
+          pageBuilder: (context, state) =>
+              _fadeTransitionPage(context: context, child: IndexPages()),
+        ),
+      ];
+
+  Page<void> _fadeTransitionPage(
+      {required BuildContext context, required Widget child}) {
     return CustomTransitionPage(
       child: child,
       transitionsBuilder: (context, animation, secondaryAnimation, child) {

@@ -10,8 +10,8 @@
             "type": "dart",
             "args": [
                 "--dart-define=ENV=dev",
-                "--dart-define=API_BASE_URL=http://192.168.2.133",
-                "--dart-define=HTTP_PORT=7001",
+                "--dart-define=API_BASE_URL=http://192.168.1.10",
+                "--dart-define=HTTP_PORT=5900",
                 "--dart-define=SOCKET_PORT=8002",
                 "--dart-define=ENABLE_LOG=true"
             ]
