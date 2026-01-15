@@ -1,11 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bloc_template/app/base/base_state.dart';
 import 'package:flutter_bloc_template/app/base/base_stateful_widget.dart';
-import 'package:flutter_bloc_template/app/log.dart';
-import 'package:flutter_bloc_template/router/router_path.dart';
-import 'package:flutter_bloc_template/services/user_service.dart';
-import 'package:go_router/go_router.dart';
 import 'package:lottie/lottie.dart';
 
 class SplashScreen extends BaseStatefulWidget {
@@ -19,19 +14,6 @@ class _SplashScreenState extends BaseState<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    //
-    Future.delayed(const Duration(seconds: 2), () {
-      if(mounted){
-        var state = super.context.read<UserBloc>().state;
-        if (state.loginResult == null) {
-              Log.d("User logged out");
-              super.context.go(RoutePath.kUserLogin);
-            } else if(state.loginResult?.token != null) {
-              Log.d("User logged in: ${state.loginResult?.token}");
-              super.context.go(RoutePath.kIndex);
-            }
-      }
-    });
   }
 
   @override
