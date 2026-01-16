@@ -28,7 +28,7 @@ class UserLoginEvent extends UserEvent {
     var result = await request.login(data);
     if (result == null) {
       bloc.loadError(Exception("Login failed"));
-      return UserState(user: currentState.user, loginResult: null);
+      return UserState(user: currentState.user, loginResult: null,isSplashFinished: true);
     }
     LocalStorageService.instance.setValue(
       LocalStorageService.kToken,
@@ -38,11 +38,11 @@ class UserLoginEvent extends UserEvent {
       //获取用户信息
       var userResult = await request.getUserInfo();
       if (userResult == null) {
-        return UserState(user: null, loginResult: result);
+        return UserState(user: null, loginResult: result,isSplashFinished: true);
       }
-      return UserState(user: userResult, loginResult: result);
+      return UserState(user: userResult, loginResult: result,isSplashFinished: true);
     }
-    return UserState(user: currentState.user, loginResult: result);
+    return UserState(user: currentState.user, loginResult: result,isSplashFinished: true);
   }
 }
 
@@ -52,7 +52,7 @@ class UserLogoutEvent extends UserEvent {
   Future<UserState> on(UserBloc bloc, UserState currentState) async {
     LocalStorageService.instance.removeValue(LocalStorageService.kToken);
     //清除用户信息
-    return UserState(user: null, loginResult: null);
+    return UserState(user: null, loginResult: null,isSplashFinished: true);
   }
 }
 
@@ -71,20 +71,22 @@ class InitLoginResultEvent extends UserEvent {
         //获取用户信息
         var result = await request.getUserInfo();
         if (result == null) {
-          return UserState(user: null, loginResult: LoginResultModel.fromJson(json.decode(loginResult)));
+          return UserState(user: null, loginResult: LoginResultModel.fromJson(json.decode(loginResult)),isSplashFinished: false);
         }
         return UserState(
           user: result,
           loginResult: LoginResultModel.fromJson(json.decode(loginResult)),
+          isSplashFinished: false
         );
       } else {
         return UserState(
           user: currentState.user,
           loginResult: LoginResultModel.fromJson(json.decode(loginResult)),
+          isSplashFinished: false
         );
       }
     }
-    return UserState(user: currentState.user, loginResult: null);
+    return UserState(user: currentState.user, loginResult: null,isSplashFinished: false);
   }
 }
 // 完成启动页事件
