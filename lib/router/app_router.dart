@@ -11,10 +11,19 @@ import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:go_router/go_router.dart';
 
 class GoRouterRefreshStream extends ChangeNotifier {
-  GoRouterRefreshStream(Stream<dynamic> stream) {
-    notifyListeners();
-    _subscription = stream.asBroadcastStream().listen(
-          (dynamic _) => notifyListeners(),
+  GoRouterRefreshStream(Stream<UserState> stream) {
+    _subscription = stream
+        .distinct((prev, next){
+          //如果为true 就不触发。也就是重定向
+          if(prev.loginResult == null && next.loginResult == null){
+            return false;
+          }else if(prev.loginResult == null && next.loginResult != null){
+            return false;
+          }
+          return prev.loginResult == next.loginResult && prev.isSplashFinished == next.isSplashFinished;
+        })
+        .listen(
+          (UserState _) => notifyListeners(),
         );
   }
 
@@ -38,42 +47,44 @@ class AppRouter {
 
   // 提供一个获取方法，如果未初始化则报错或通过 context 初始化
   GoRouter getRouter(BuildContext context) {
-    if (_router == null) {
-      final userBloc = context.read<UserBloc>();
+    // 如果已经初始化，直接返回
+    if (_router != null) return _router!;
 
-      _router = GoRouter(
-        initialLocation: RoutePath.kSplash,
-        navigatorKey: navigatorKey,
-        observers: [FlutterSmartDialog.observer],
-        // 核心：将 context 中的 userBloc 转换为 Listenable
-        refreshListenable: GoRouterRefreshStream(userBloc.stream),
+    final userBloc = context.read<UserBloc>();
 
-        redirect: (context, state) {
-          final user = userBloc.state;
-          final bool isLoggedIn = user.loginResult != null;
-          final String location = state.matchedLocation;
+    _router = GoRouter(
+      initialLocation: RoutePath.kSplash,
+      navigatorKey: navigatorKey,
+      observers: [FlutterSmartDialog.observer],
+      // 核心：将 context 中的 userBloc 转换为 Listenable
+      refreshListenable: GoRouterRefreshStream(userBloc.stream),
 
-          // 逻辑：如果未登录且不在登录页或开屏页 -> 去登录
-          if (!isLoggedIn) {
-            if (location != RoutePath.kUserLogin ||
-                location != RoutePath.kSplash) {
-              return RoutePath.kUserLogin;
-            }
+      redirect: (context, state) {
+        final user = userBloc.state;
+        final bool isLoggedIn = user.loginResult != null;
+        final String location = state.matchedLocation;
+        // 如果 Splash 没播完，强制留在 Splash
+        if (!user.isSplashFinished) {
+          return RoutePath.kSplash;
+        }
+        if (!isLoggedIn) {
+          // 未登录且不在登录页 -> 去登录
+          return (location != RoutePath.kUserLogin)
+              ? RoutePath.kUserLogin
+              : null;
+        } else {
+          // 已登录且在登录/启动页 -> 去首页
+          if (location == RoutePath.kUserLogin ||
+              location == RoutePath.kSplash) {
+            return RoutePath.kIndex;
           }
+        }
 
-          // 逻辑：如果已登录且在登录页或启动页 -> 去首页
-          if (isLoggedIn) {
-            if (location == RoutePath.kUserLogin ||
-                location == RoutePath.kSplash) {
-              return RoutePath.kIndex;
-            }
-          }
+        return null;
+      },
+      routes: _routes,
+    );
 
-          return null;
-        },
-        routes: _routes,
-      );
-    }
     return _router!;
   }
 

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bloc_template/app/base/base_state.dart';
 import 'package:flutter_bloc_template/app/base/base_stateful_widget.dart';
+import 'package:flutter_bloc_template/services/user_service.dart';
 import 'package:lottie/lottie.dart';
 
 class SplashScreen extends BaseStatefulWidget {
@@ -14,6 +16,13 @@ class _SplashScreenState extends BaseState<SplashScreen> {
   @override
   void initState() {
     super.initState();
+    Future.delayed(const Duration(seconds: 2),() async{
+      if(!mounted){
+        return;
+      }
+      await super.context.read<UserBloc>().finishSplash();
+    });
+    
   }
 
   @override
