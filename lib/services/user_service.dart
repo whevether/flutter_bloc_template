@@ -10,7 +10,8 @@ import 'package:flutter_bloc_template/services/local_storage_service.dart';
 class UserState {
   final UserModel? user;
   final LoginResultModel? loginResult;
-  UserState({this.user, this.loginResult});
+  final bool isSplashFinished;
+  UserState({this.user, this.loginResult,this.isSplashFinished = false});
 }
 
 //用户事件
@@ -86,7 +87,18 @@ class InitLoginResultEvent extends UserEvent {
     return UserState(user: currentState.user, loginResult: null);
   }
 }
-
+// 完成启动页事件
+class FinishSplashEvent extends UserEvent {
+  @override
+  Future<UserState> on(UserBloc bloc, UserState currentState) async {
+    // 保持现有的用户信息和登录状态，仅修改 isSplashFinished
+    return UserState(
+      user: currentState.user,
+      loginResult: currentState.loginResult,
+      isSplashFinished: true,
+    );
+  }
+}
 //用户Bloc
 class UserBloc extends BaseBloc<UserEvent, UserState> {
   UserBloc(super.initialState) {
@@ -105,5 +117,9 @@ class UserBloc extends BaseBloc<UserEvent, UserState> {
   //初始化登录结果
   Future<void> initLoginResult() async {
     add(InitLoginResultEvent());
+  }
+  // 标记 Splash 已完成
+  Future<void> finishSplash() async {
+    add(FinishSplashEvent());
   }
 }
