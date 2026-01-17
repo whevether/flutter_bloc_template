@@ -39,8 +39,8 @@ dependencies:
   go_router: ^17.0.1 #路由
   dio: ^5.9.0 #网络请求
   permission_handler: ^12.0.1 #权限处理
-  hive_ce: ^2.16.0 #本地存储
-  hive_ce_flutter: ^2.3.3 #本地存储flutter支持
+  hive_ce: ^2.18.0 #本地存储
+  hive_ce_flutter: ^2.3.4 #本地存储flutter支持
   logger: ^2.6.2 #日志
   intl: ^0.20.2 #国际化
   easy_refresh: ^3.4.0 #下拉刷新
