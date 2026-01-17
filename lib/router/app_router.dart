@@ -15,11 +15,11 @@ class GoRouterRefreshStream extends ChangeNotifier {
     _subscription = stream
         .distinct((prev, next){
           //如果为true 就不触发。也就是重定向
-          if(prev.loginResult == null && next.loginResult == null){
-            return false;
-          }else if(prev.loginResult == null && next.loginResult != null){
-            return false;
-          }
+          // if(prev.loginResult == null && next.loginResult == null){
+          //   return false;
+          // }else if(prev.loginResult == null && next.loginResult != null){
+          //   return false;
+          // }
           return prev.loginResult == next.loginResult && prev.isSplashFinished == next.isSplashFinished;
         })
         .listen(
