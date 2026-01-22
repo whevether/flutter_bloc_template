@@ -210,7 +210,7 @@ class Utils {
 
   /// 保存图片
   static void saveImage(String url) async {
-    if (Platform.isIOS && !await checkPhotoPermission()) {
+    if (!await checkPhotoPermission()) {
       return;
     }
     try {
@@ -237,7 +237,7 @@ class Utils {
 
   /// 保存视频
   static void saveVideo(String url, {String? album}) async {
-    if (Platform.isIOS && !await checkPhotoPermission()) {
+    if (!await checkPhotoPermission()) {
       return;
     }
     try {
