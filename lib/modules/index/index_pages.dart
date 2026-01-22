@@ -41,8 +41,7 @@ class _IndexPagesState extends BaseState<IndexPages> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     var appSetting = context.read<AppSettingService>();
-    return Stack(
-      children: [
+    return 
         DataChangeWidget<int>(
           bloc: _selectIndex,
           child: (context, state) {
@@ -107,8 +106,6 @@ class _IndexPagesState extends BaseState<IndexPages> {
               ),
             );
           },
-        ),
-      ],
-    );
+        );
   }
 }
