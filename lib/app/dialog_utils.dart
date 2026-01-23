@@ -20,33 +20,32 @@ class DialogUtils {
     String? cancel,
     bool selectable = false,
     bool barrierDismissible = true,
+    Widget? actionSpacer,
     List<Widget>? actions,
   }) async {
     var result = await showBottomSheetCommon<bool>(
+      header: buildBottomSheetHeader(title: title, showClose: true),
+      footer: buildActionWidget(
+          cancelText: cancel ?? '取消', submitText: confirm ?? '确定'),
       [
-        Column(
-          children: [
-            SizedBox(height: 20.h),
-            buildBottomSheetHeader(title: title, showClose: true),
-            SizedBox(height: 20.h),
-            SingleChildScrollView(
-              child: selectable
-                  ? SelectableText(content, style: TextStyle(fontSize: 16.sp))
-                  : Text(
-                      content,
-                      style: TextStyle(fontSize: 16.sp),
-                    ),
-            ),
-            const Spacer(),
-            buildActionWidget(cancelText: cancel ?? '取消',submitText: confirm??'确定' ),
-          ],
+        SizedBox(height: 20.h),
+        SingleChildScrollView(
+          child: selectable
+              ? SelectableText(content, style: TextStyle(fontSize: 16.sp))
+              : Text(
+                  content,
+                  style: TextStyle(fontSize: 16.sp),
+                ),
         ),
+        actionSpacer ??
+            SizedBox(
+              height: 15.h,
+            ),
       ],
       'alert_dialog',
       alignment: Alignment.center,
       borderRadius: BorderRadius.circular(16.r),
       margin: EdgeInsets.symmetric(horizontal: 20.w),
-      height: 160.h,
       clickMaskDismiss: false,
     );
     return result ?? false;
@@ -89,7 +88,6 @@ class DialogUtils {
       alignment: Alignment.center,
       borderRadius: BorderRadius.circular(40.r),
       margin: EdgeInsets.symmetric(horizontal: 20.w),
-      height: height,
       clickMaskDismiss: false,
     );
     return result;
@@ -106,62 +104,56 @@ class DialogUtils {
   }) {
     return Stack(
       children: [
-        showClose
-            ? Positioned(
-                top: 0,
-                left: 0,
-                child: InkWell(
-                  child: Icon(Icons.close_sharp, color: closeColor),
-                  onTap: () {
-                    
-                    if (onClose != null) {
-                      onClose();
-                    }else{
-                      SmartDialog.dismiss();
-                    }
-                  },
-                ),
-              )
-            : const SizedBox.shrink(),
-        isManage
-            ? Positioned(
-                right: 0,
-                top: 0,
-                child: InkWell(
-                  onTap: () {
-                    
-                    if (onManage != null) {
-                      onManage();
-                    }else{
-                      SmartDialog.dismiss();
-                    }
-                  },
-                  child: Text(
-                    '管理',
-                    style:
-                        TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w400),
+        if (showClose)
+          Positioned(
+            top: 0,
+            left: 0,
+            child: InkWell(
+              child: Icon(Icons.close_sharp, color: closeColor),
+              onTap: () {
+                if (onClose != null) {
+                  onClose();
+                } else {
+                  SmartDialog.dismiss();
+                }
+              },
+            ),
+          ),
+        if (isManage)
+          Positioned(
+            right: 0,
+            top: 0,
+            child: InkWell(
+              onTap: () {
+                if (onManage != null) {
+                  onManage();
+                } else {
+                  SmartDialog.dismiss();
+                }
+              },
+              child: Text(
+                '管理',
+                style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w400),
+              ),
+            ),
+          ),
+        if (title != null)
+          SizedBox(
+            width: double.infinity,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  title,
+                  style: TextStyle(
+                    fontSize: 18.sp,
+                    fontWeight: FontWeight.w600,
+                    color: closeColor,
                   ),
                 ),
-              )
-            : const SizedBox.shrink(),
-        title != null
-            ? SizedBox(
-                width: double.infinity,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      title,
-                      style: TextStyle(
-                        fontSize: 18.sp,
-                        fontWeight: FontWeight.w600,
-                        color: closeColor,
-                      ),
-                    ),
-                  ],
-                ),
-              )
-            : const SizedBox.shrink(),
+              ],
+            ),
+          ),
       ],
     );
   }
@@ -197,7 +189,7 @@ class DialogUtils {
                   horizontal: 16.w,
                 ),
                 backgroundColor: AppColor.backgroundColor,
-                foregroundColor: AppColor.black333,
+                foregroundColor: AppColor.color8E9AB0,
                 shape: RoundedRectangleBorder(
                   side: BorderSide(
                     width: 1.w,
@@ -210,7 +202,7 @@ class DialogUtils {
                 cancelText,
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  color: AppColor.black333,
+                  color: AppColor.color8E9AB0,
                   fontSize: 16.sp,
                   fontWeight: FontWeight.w600,
                 ),
@@ -250,24 +242,19 @@ class DialogUtils {
   }
 
   // 打开弹窗
-  static Future<T?> showBottomSheetCommon<T>(
-    List<Widget> widget,
-    String tag, {
-    double? height,
-    double? maxHeight,
-    double? maxWidth,
-    bool showTopBorder = false,
-    Color? backgroundColor,
-    bool? clickMaskDismiss = true,
-    Alignment alignment = Alignment.bottomCenter,
-    EdgeInsetsGeometry? margin,
-    EdgeInsetsGeometry? padding,
-    Duration? displayTime,
-    BorderRadiusGeometry borderRadius = const BorderRadius.only(
-      topLeft: Radius.circular(40),
-      topRight: Radius.circular(40),
-    ),
-  }) async {
+  static Future<T?> showBottomSheetCommon<T>(List<Widget> widget, String tag,
+      {double? maxHeight, // 依然保留最大高度限制，防止超出屏幕
+      double? maxWidth,
+      bool showTopBorder = false,
+      Color? backgroundColor,
+      bool? clickMaskDismiss = true,
+      Alignment alignment = Alignment.bottomCenter,
+      EdgeInsetsGeometry? margin,
+      EdgeInsetsGeometry? padding,
+      Widget? header,
+      Widget? footer,
+      Duration? displayTime,
+      BorderRadiusGeometry? borderRadius}) async {
     var result = await SmartDialog.show<T>(
       tag: tag,
       alignment: alignment,
@@ -275,42 +262,57 @@ class DialogUtils {
       displayTime: displayTime,
       builder: (_) {
         return Container(
-          // width: double.infinity,
-          height: height ?? 358.h,
+          // 1. 去掉固定 height，让内容决定高度
           constraints: BoxConstraints(
-            maxHeight: maxHeight ?? 500.w,
+            // 设置最大高度，通常建议为屏幕高度的 80% 或传入的值
+            maxHeight: maxHeight ?? 0.8.sh,
             maxWidth: maxWidth ?? double.infinity,
           ),
           margin: margin,
           padding:
-              padding ?? EdgeInsets.only(left: 16.w, right: 16.w, bottom: 16.w),
+              padding ?? EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
           decoration: ShapeDecoration(
             color: backgroundColor ?? AppColor.backgroundColor,
-            shape: RoundedRectangleBorder(borderRadius: borderRadius),
+            shape: RoundedRectangleBorder(
+              borderRadius: borderRadius ??
+                  BorderRadius.only(
+                    topLeft: Radius.circular(10.r),
+                    topRight: Radius.circular(10.r),
+                  ),
+            ),
           ),
-          child: Stack(
-            children: [
-              showTopBorder
-                  ? Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                          height: 6.h,
-                          width: 37.5.w,
-                          margin: EdgeInsets.only(top: 10.w),
-                          decoration: ShapeDecoration(
-                            color: AppColor.borderTopColor,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(16.r),
-                            ),
-                          ),
-                        ),
-                      ],
-                    )
-                  : const SizedBox.shrink(),
-              Padding(padding: EdgeInsets.only(top: 20.w)),
-              ...widget,
-            ],
+          // 2. 使用 SafeArea 确保底部内容不被遮挡（如果是 bottomCenter 弹出）
+          child: SafeArea(
+            top: false,
+            child: Column(
+              mainAxisSize: MainAxisSize.min, // 3. 关键：设置为 min，高度才会自适应
+              children: [
+                // 顶部横条
+                if (showTopBorder)
+                  Container(
+                    height: 6.h,
+                    width: 37.5.w,
+                    margin: EdgeInsets.only(top: 10.h, bottom: 10.h),
+                    decoration: BoxDecoration(
+                      color: AppColor.borderTopColor,
+                      borderRadius: BorderRadius.circular(16.r),
+                    ),
+                  ),
+                if (header != null) header,
+                // 4. 内容区域使用 Flexible + SingleChildScrollView
+                // 这样当内容少时自适应，内容多时可滚动且不会报错
+                Flexible(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: widget,
+                    ),
+                  ),
+                ),
+                if (footer != null) footer,
+              ],
+            ),
           ),
         );
       },
@@ -319,7 +321,7 @@ class DialogUtils {
   }
 
   /// 检查更新
-  static void checkUpdate({bool showMsg = false}) async {
+  static void checkUpdate({bool showMsg = false, Widget? actionSpacer}) async {
     try {
       int currentVer = Utils.parseVersion(Utils.packageInfo.version);
       CommonRequest request = CommonRequest();
@@ -336,56 +338,54 @@ class DialogUtils {
           versionInfo.updateStatus == 1 &&
           version > skipVersion) {
         var result = await showBottomSheetCommon<bool>(
+          header: buildBottomSheetHeader(
+            showClose: false,
+            closeColor: AppColor.backgroundColorDark,
+            title: "发现新版本 v${versionInfo.versionNo}",
+          ),
+          footer: buildActionWidget(
+            submitText: '去下载',
+            cancelText: versionInfo.updateType == 0 ? null : '跳过',
+            onCancel: () {
+              SmartDialog.dismiss(result: false);
+            },
+            onSubmit: () {
+              SmartDialog.dismiss(result: true);
+            },
+          ),
           [
-            Column(
-              children: [
-                SizedBox(height: 36.h),
-                buildBottomSheetHeader(
-                  showClose: false,
-                  closeColor: AppColor.backgroundColorDark,
-                  title: "发现新版本 v${versionInfo.versionNo}",
-                ),
-                 SizedBox(height: 10.h),
-                SizedBox(
-                  width: double.infinity,
-                  height: 200.h,
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        Icon(Icons.system_update),
-                         SizedBox(height: 10.h),
-                        Text(
-                          versionInfo.versionName,
-                          style: TextStyle(
-                            fontSize: 16.sp,
-                            color: AppColor.backgroundColorDark,
-                          ),
-                        ),
-                         SizedBox(height: 10.h),
-                        Text(
-                          versionInfo.content,
-                          style: TextStyle(
-                            fontSize: 16.sp,
-                            color: AppColor.backgroundColorDark,
-                          ),
-                        ),
-                      ],
+            SizedBox(height: 10.h),
+            SizedBox(
+              width: double.infinity,
+              height: 200.h,
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Icon(Icons.system_update),
+                    SizedBox(height: 10.h),
+                    Text(
+                      versionInfo.versionName,
+                      style: TextStyle(
+                        fontSize: 16.sp,
+                        color: AppColor.backgroundColorDark,
+                      ),
                     ),
-                  ),
+                    SizedBox(height: 10.h),
+                    Text(
+                      versionInfo.content,
+                      style: TextStyle(
+                        fontSize: 16.sp,
+                        color: AppColor.backgroundColorDark,
+                      ),
+                    ),
+                  ],
                 ),
-                const Spacer(),
-                buildActionWidget(
-                  submitText: '去下载',
-                  cancelText: versionInfo.updateType == 0 ? null : '跳过',
-                  onCancel: () {
-                    SmartDialog.dismiss(result: false);
-                  },
-                  onSubmit: () {
-                    SmartDialog.dismiss(result: true);
-                  },
-                ),
-              ],
+              ),
             ),
+            actionSpacer ??
+                SizedBox(
+                  height: 30.h,
+                ),
           ],
           'updateApp',
           showTopBorder: true,

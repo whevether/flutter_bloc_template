@@ -322,61 +322,51 @@ class Utils {
   /// 分享
   static void share(String url, {String content = ""}) async {
     await DialogUtils.showBottomSheetCommon<void>(
+      header: DialogUtils.buildBottomSheetHeader(
+          showClose: true,
+          closeColor: AppColor.backgroundColorDark,
+          title: '分享'),
       [
-        Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const SizedBox(
-              height: 36,
-            ),
-            DialogUtils.buildBottomSheetHeader(
-                showClose: true,
-                closeColor: AppColor.backgroundColorDark,
-                title: '分享'),
-            SizedBox(
-              height: 10.h,
-            ),
-            ListTile(
-              leading: const Icon(Icons.copy),
-              title: const Text("复制链接"),
-              onTap: () {
-                SmartDialog.dismiss();
-                copyText(url);
-              },
-            ),
-            Visibility(
-              visible: content.isNotEmpty,
-              child: ListTile(
-                leading: const Icon(Icons.copy),
-                title: const Text("复制标题与链接"),
-                onTap: () {
-                  SmartDialog.dismiss();
-                  copyText("$content\n$url");
-                },
-              ),
-            ),
-            ListTile(
-              leading: const Icon(Icons.public),
-              title: const Text("浏览器打开"),
-              onTap: () {
-                SmartDialog.dismiss();
-                openLaunchUrlString(url);
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.share),
-              title: const Text("系统分享"),
-              onTap: () {
-                SmartDialog.dismiss();
-                SharePlus.instance
-                    .share(ShareParams(title: content, text: url));
-              },
-            ),
-          ],
-        )
+        SizedBox(
+          height: 10.h,
+        ),
+        ListTile(
+          leading: const Icon(Icons.copy),
+          title: const Text("复制链接"),
+          onTap: () {
+            SmartDialog.dismiss();
+            copyText(url);
+          },
+        ),
+        Visibility(
+          visible: content.isNotEmpty,
+          child: ListTile(
+            leading: const Icon(Icons.copy),
+            title: const Text("复制标题与链接"),
+            onTap: () {
+              SmartDialog.dismiss();
+              copyText("$content\n$url");
+            },
+          ),
+        ),
+        ListTile(
+          leading: const Icon(Icons.public),
+          title: const Text("浏览器打开"),
+          onTap: () {
+            SmartDialog.dismiss();
+            openLaunchUrlString(url);
+          },
+        ),
+        ListTile(
+          leading: const Icon(Icons.share),
+          title: const Text("系统分享"),
+          onTap: () {
+            SmartDialog.dismiss();
+            SharePlus.instance.share(ShareParams(title: content, text: url));
+          },
+        ),
       ],
       'show_share',
-      height: 330.h,
       showTopBorder: true,
     );
   }
@@ -401,12 +391,8 @@ class Utils {
   }
 
   // 多语言翻译
-  static LanguageLocalizations?  translationI18(BuildContext context) =>
+  static LanguageLocalizations? translationI18(BuildContext context) =>
       LanguageLocalizations.of(context);
-
-
-
-
 
   // 缓存文件路径
   static Future<Directory> getDirectory(String name,
@@ -437,22 +423,20 @@ class Utils {
 
   // 获取所有缓存大小
   static Future<int> getTotalCachedSizeBytes() async {
-
-      //图片缓存
-      var imageCache = await getCachedSizeBytes();
-      //视频缓存
-      var videoCache =
-          await getNameCachedSizeBytes(AppConstant.videoCache, isCache: true);
-      //语音缓存
-      var audioCache =
-          await getNameCachedSizeBytes(AppConstant.audioCache, isCache: true);
-      // 缓存
-      var storageCache =
-          await getNameCachedSizeBytes(AppConstant.imageCache, isCache: true);
-      // 缓存
-      var avatarCache = await getNameCachedSizeBytes(AppConstant.avatarCache);
-      return imageCache + videoCache + audioCache + storageCache + avatarCache;
-    
+    //图片缓存
+    var imageCache = await getCachedSizeBytes();
+    //视频缓存
+    var videoCache =
+        await getNameCachedSizeBytes(AppConstant.videoCache, isCache: true);
+    //语音缓存
+    var audioCache =
+        await getNameCachedSizeBytes(AppConstant.audioCache, isCache: true);
+    // 缓存
+    var storageCache =
+        await getNameCachedSizeBytes(AppConstant.imageCache, isCache: true);
+    // 缓存
+    var avatarCache = await getNameCachedSizeBytes(AppConstant.avatarCache);
+    return imageCache + videoCache + audioCache + storageCache + avatarCache;
   }
 
   //清除单个缓存
@@ -481,25 +465,21 @@ class Utils {
   }
 
   //清除所有缓存
-  static Future<bool> clearTotalDiskCache(
-      { Duration? duration}) async {
-
-      var imageCache = await clearDiskCachedImages();
-      var videoCache =
-          await clearNameDiskCached(AppConstant.videoCache, isCache: true);
-      var audioCache =
-          await clearNameDiskCached(AppConstant.audioCache, isCache: true);
-      var storageCache =
-          await clearNameDiskCached(AppConstant.imageCache, isCache: true);
-      var avatarCache = await clearNameDiskCached(AppConstant.avatarCache);
-      return imageCache &&
-          videoCache &&
-          audioCache &&
-          storageCache &&
-          avatarCache;
-    
+  static Future<bool> clearTotalDiskCache({Duration? duration}) async {
+    var imageCache = await clearDiskCachedImages();
+    var videoCache =
+        await clearNameDiskCached(AppConstant.videoCache, isCache: true);
+    var audioCache =
+        await clearNameDiskCached(AppConstant.audioCache, isCache: true);
+    var storageCache =
+        await clearNameDiskCached(AppConstant.imageCache, isCache: true);
+    var avatarCache = await clearNameDiskCached(AppConstant.avatarCache);
+    return imageCache &&
+        videoCache &&
+        audioCache &&
+        storageCache &&
+        avatarCache;
   }
-
 
   // 创建临时文件
   static Future<File> createTempFile({
@@ -559,7 +539,6 @@ class Utils {
       }
     }
   }
-
 
   //检查相机与麦克风权限
 
