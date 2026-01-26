@@ -391,8 +391,10 @@ class Utils {
   }
 
   // 多语言翻译
-  static LanguageLocalizations? translationI18(BuildContext context) =>
-      LanguageLocalizations.of(context);
+  static LanguageLocalizations? get translationI18 {
+    final ctx = AppRouter.instance.navigatorKey.currentContext;
+    return ctx != null ? LanguageLocalizations.of(ctx) : null;
+  }
 
   // 缓存文件路径
   static Future<Directory> getDirectory(String name,
