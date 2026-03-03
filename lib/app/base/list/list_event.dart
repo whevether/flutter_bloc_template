@@ -133,7 +133,7 @@ class LoadMoreEvent<T> extends ListEvent<T> {
       list.add(item as T);
     }
     // 如果当前页数等于总页数，表示没有更多数据
-    if (list.length == bean[AppConstant.totalCountKey] || list.isEmpty) {
+    if (currentState.data.length == bean[AppConstant.totalPageKey] || list.isEmpty) {
       bloc.controller.finishLoad(IndicatorResult.noMore);
       return currentState;
     }
