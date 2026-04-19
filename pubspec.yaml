@@ -41,7 +41,7 @@ dependencies:
   permission_handler: ^12.0.1 #权限处理
   hive_ce: ^2.19.3  #本地存储
   hive_ce_flutter: ^2.3.4 #本地存储flutter支持
-  logger: ^2.6.2 #日志
+  logger: ^2.7.0 #日志
   intl: ^0.20.2 #国际化
   easy_refresh: ^3.5.0 #下拉刷新
   extended_image: ^10.0.1 #图片加载
