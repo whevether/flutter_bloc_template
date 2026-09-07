@@ -1,7 +1,7 @@
 import 'package:flutter_bloc_template/app/base/base_stateless_widget.dart';
 import 'package:flutter_bloc_template/widget/local_image.dart';
 import 'package:flutter_bloc_template/widget/net_image.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_bloc_template/app/app_color.dart';
 
 class UserPhoto extends BaseStatelessWidget {

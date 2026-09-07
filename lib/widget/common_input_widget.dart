@@ -1,5 +1,5 @@
 // 输入框组件 - 支持浮动标签效果
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc_template/app/app_color.dart';
 import 'package:flutter_bloc_template/app/base/base_state.dart';

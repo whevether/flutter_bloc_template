@@ -1,3 +1,4 @@
+import com.android.build.api.dsl.CommonExtension
 allprojects {
     repositories {
         google()
@@ -13,9 +14,12 @@ rootProject.layout.buildDirectory.value(newBuildDir)
 subprojects {
     afterEvaluate {
         if (plugins.hasPlugin("com.android.application") || plugins.hasPlugin("com.android.library")) {
-            extensions.configure<com.android.build.gradle.BaseExtension> {
-                compileSdkVersion(36)
-                buildToolsVersion = "36.1.0"
+           extensions.configure<CommonExtension> {
+                compileSdk {
+                    version = release(37)
+                }
+                buildToolsVersion = "37.0.0"
+                ndkVersion = "30.0.16138531"
                 if (namespace == null) {
                     namespace = project.group.toString()
                 }
@@ -23,13 +27,6 @@ subprojects {
         }
     }
     layout.buildDirectory.set(rootProject.layout.buildDirectory.dir(project.name))
-    dependencyLocking {
-        ignoredDependencies.add("io.flutter:*")
-        lockFile = file("${rootProject.projectDir}/project-${project.name}.lockfile")
-        if (!project.hasProperty("local-engine-repo")) {
-            lockAllConfigurations()
-        }
-    }
 }
 subprojects {
     project.evaluationDependsOn(":app")

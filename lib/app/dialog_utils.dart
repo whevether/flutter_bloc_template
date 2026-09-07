@@ -5,7 +5,7 @@ import 'package:flutter_bloc_template/services/local_storage_service.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:flutter_bloc_template/app/app_color.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 class DialogUtils {
   /// 提示弹窗
@@ -298,7 +298,7 @@ class DialogUtils {
                       borderRadius: BorderRadius.circular(16.r),
                     ),
                   ),
-                if (header != null) header,
+                ?header,
                 // 4. 内容区域使用 Flexible + SingleChildScrollView
                 // 这样当内容少时自适应，内容多时可滚动且不会报错
                 Flexible(
@@ -310,7 +310,7 @@ class DialogUtils {
                     ),
                   ),
                 ),
-                if (footer != null) footer,
+                ?footer,
               ],
             ),
           ),

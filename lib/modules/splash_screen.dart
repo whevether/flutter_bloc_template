@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bloc_template/app/base/base_state.dart';
 import 'package:flutter_bloc_template/app/base/base_stateful_widget.dart';

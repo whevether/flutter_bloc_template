@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:ui';
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bloc_template/app/app_style.dart';
@@ -16,7 +16,6 @@ import 'package:flutter_bloc_template/widget/status/app_loadding_widget.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:hive_ce_flutter/adapters.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 Future<void> main() async {
@@ -90,10 +89,8 @@ class MyApp extends StatelessWidget {
               themeMode: state.themeMode,
               theme: AppStyle.lightTheme,
               darkTheme: AppStyle.darkTheme,
-              localizationsDelegates: const [
-                GlobalMaterialLocalizations.delegate,
-                GlobalWidgetsLocalizations.delegate,
-                GlobalCupertinoLocalizations.delegate,
+              localizationsDelegates: [
+                ...GlobalMaterialLocalizations.delegates,
                 LanguageLocalizationsDelegate(),
               ],
               routerConfig: AppRouter.instance.getRouter(context),

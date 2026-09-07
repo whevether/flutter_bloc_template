@@ -1,5 +1,5 @@
 import 'package:easy_refresh/easy_refresh.dart';
-import 'package:flutter/material.dart' hide ErrorWidgetBuilder;
+import 'package:material_ui/material_ui.dart' hide ErrorWidgetBuilder;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bloc_template/app/base/base_state.dart';
 import 'package:flutter_bloc_template/app/base/base_stateful_widget.dart';

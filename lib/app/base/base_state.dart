@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_bloc_template/app/base/bloc/base_bloc.dart';
 import 'package:flutter_bloc_template/app/base/loading_state.dart';
 import 'package:flutter_bloc_template/app/base/ui_adapter.dart';
